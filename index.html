@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>我的第一張海報｜Y2K 選物店</title>
+<meta name="description" content="7 天後開幕，做出你的第一張海報。全部交給 AI 很快也很漂亮，但路人看得懂嗎？">
+<meta property="og:title" content="我的第一張海報｜Y2K 選物店">
+<meta property="og:description" content="7 天後開幕，做出你的第一張海報。全部交給 AI 很快也很漂亮，但路人看得懂嗎？">
+<meta property="og:image" content="https://merelhuang1989-source.github.io/y2k-poster-game/og.png">
+<meta property="og:url" content="https://merelhuang1989-source.github.io/y2k-poster-game/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://use.typekit.net/xqn7pkz.css">
 <link rel="stylesheet" href="huninn.css">
 <style>@font-face{font-family:'Bagel Fat One';src:url(fonts/bagel.woff2) format('woff2');font-display:swap}</style>
 <style>
@@ -163,7 +171,7 @@ input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border
 const SURVEY_URL = 'https://ooopenlab.cc/preview/yyfDpRRFjwKCDO0Lup46'; // 問卷 C（目前是預覽網址）
 const START_DAYS = 7;
 const COLS = 12, ROWS = 15;           // 排版格線 12 欄 × 15 列（每格正方形）
-const EN_FONT = "Yink, 'Bagel Fat One'"; // 英文：Yink（付費字，拿到檔案後放 fonts/yink.woff2）；目前先用 Bagel Fat One 代替
+const EN_FONT = "yink, 'Bagel Fat One'"; // 英文：Yink（Adobe Fonts 字型組 xqn7pkz，只在 merelhuang1989-source.github.io 載得到）；載不到時用 Bagel Fat One
 const ZH_FONT = "Huninn";                 // 中文：jf open 粉圓（只有一種字重，用描邊加粗）
 
 const PRODUCTS = [
@@ -576,7 +584,7 @@ V.end = () => {
     <div class="row"><button class="btn ghost" data-act="copy">複製遊戲連結</button><button class="btn ghost" data-act="again">再玩一次</button></div>
     <p class="sub" style="font-size:12.5px">想分享結果，截圖這一頁就可以。</p>
   </div>
-  <div class="foot">試作版 v0.2｜畢業製作《這是你想要的世界嗎？》<br>商品圖：Kiki 生成｜字體：jf open 粉圓 Huninn、Bagel Fat One（暫代 Yink），皆為 SIL OFL 1.1</div>`;
+  <div class="foot">試作版 v0.2｜畢業製作《這是你想要的世界嗎？》<br>商品圖：Kiki 生成｜字體：jf open 粉圓 Huninn、Bagel Fat One（SIL OFL 1.1）、Yink（Dave Rowland，Adobe Fonts）</div>`;
 };
 
 /* ===================== 流程 ===================== */
@@ -704,7 +712,7 @@ function flashTest(){
 
 reset(); render();
 // 字體載入後重新量字寬、重畫
-document.fonts && document.fonts.load(`100px 'Bagel Fat One'`).then(()=>document.fonts.load(`100px Huninn`,'我的第一張海報選物店')).then(()=>document.fonts.ready).then(()=>render());
+document.fonts && Promise.all([document.fonts.load(`100px yink`,'Y2K'),document.fonts.load(`100px 'Bagel Fat One'`)]).then(()=>document.fonts.load(`100px Huninn`,'我的第一張海報選物店')).then(()=>document.fonts.ready).then(()=>render());
 </script>
 
 </body>
