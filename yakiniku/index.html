@@ -188,6 +188,9 @@ const BGS = {
   pink:  {label:'桃粉', bg:'#ff8fb1', ink:'#1a1410'},
   black: {label:'黑', bg:'#0b0806', ink:'#f6e7c8'},
 };
+// 看起來好吃（食慾）：依網路常見的顏色理論，看最後海報的背景色，加減在「一眼看懂」K
+// 注意：這是餐飲品牌的流行說法，實驗結果並不一致（結局頁會標明）
+const APPETITE = {red:6, yellow:4, black:0, pink:-4, green:-6};
 // 分數四項：K 一眼看懂、T 打中對的人、M 記得住、P 好看（只顯示不計分）
 const LOGOS = {
   gold:  {label:'金色火焰字', note:'跟 AI 圖最像的那種金亮字', fx:{P:8,M:2}},
@@ -197,9 +200,9 @@ const LOGOS = {
 };
 const PALETTES = {
   black: {label:'黑底＋金色', note:'AI 最常給的組合，看起來很高級', bg:'black', fx:{M:-6,P:6}},
-  red:   {label:'朱紅＋白字', note:'像炭火，遠遠就知道是吃的', bg:'red', fx:{M:8,T:5}},
-  yellow:{label:'檸檬黃＋黑字', note:'整條街最亮，晚上也顯眼', bg:'yellow', fx:{M:8,T:3}},
-  green: {label:'翠綠＋白字', note:'很跳，很少燒肉店用', bg:'green', fx:{M:10,T:-4,P:-4}},
+  red:   {label:'朱紅＋白字', note:'像炭火，大家都說紅色最開胃', bg:'red', fx:{M:8,T:5}},
+  yellow:{label:'檸檬黃＋黑字', note:'整條街最亮，也常聽說黃色開胃', bg:'yellow', fx:{M:8,T:3}},
+  green: {label:'翠綠＋白字', note:'很跳，很少燒肉店用，常被說不開胃', bg:'green', fx:{M:10,T:-4,P:-4}},
 };
 // 店名的字：赤提灯發光（白芯、黃芯），金箔是 AI 款
 const TITLE_STYLES = {
@@ -233,6 +236,7 @@ const ENDINGS = [
   {min:40, title:'一間店', text:'好像有點意思，但又沒有讓人想停下來。路人看到了，只是沒記住，也不太確定是不是給自己的。'},
   {min:0,  title:'看不懂', text:'很高級、很閃，可是沒人知道你在賣什麼。開幕那天，大家拍了照，然後走去隔壁。'},
 ];
+const APPETITE_NOTE = '流行說法：「紅、黃色促進食慾，藍、綠色抑制食慾」常見於餐飲品牌和網路文章。實驗結果其實並不一致，有一項 448 人的研究發現，食物放在紅、藍、白、灰背景上，想不想吃沒有差別（Schlintl 與 Schienle，2020，Frontiers in Psychology）。';
 const RESEARCH = {
   clutter:'Pieters、Wedel 與 Batra（2010，Journal of Marketing）：畫面細節塞太滿，會搶走大家對品牌的注意，也會降低好感。',
   product:'Pieters 與 Wedel（2004，Journal of Marketing）：圖像是平面廣告裡最能抓住目光的元素。肉的照片太小，等於沒放。',
@@ -329,6 +333,7 @@ function scores(st=S){
     if(info && items.length>4)K-=10;
     if(!st.layoutSelf){M-=8;flags.add('distinct')}
     if(st.bg==='black'){M-=4}
+    K+=APPETITE[st.bg]||0;
   }
   if(st.tested)K+=5;
   if(st.exportJpg)K-=8;
@@ -558,7 +563,7 @@ V.end = () => {
     <div class="tape">${renderPoster(S.elements,{id:'final'})}</div>
     <p style="margin-top:12px">${end.text}</p>
     <div class="gap">${gapLine}</div>
-    ${m('一眼看懂',sc.K,'3 秒內知道你在賣什麼嗎？（占 40%）')}
+    ${m('一眼看懂',sc.K,`3 秒內知道你在賣什麼嗎？（占 40%）<br>其中「看起來好吃」（背景用${BGS[S.bg||'black'].label}）：${(APPETITE[S.bg||'black']>0?'+':'')+APPETITE[S.bg||'black']}`)}
     ${m('打中對的人',sc.T,'想吸引的客群會覺得「這是給我的」嗎？（占 30%）')}
     ${m('記得住',sc.M,'會不會跟隔壁撞臉？（占 30%）')}
     ${m('好看',sc.P,'只顯示，不計分','pretty')}
@@ -570,7 +575,7 @@ V.end = () => {
     <ul class="log">${S.log.map(l=>`<li><span>${l.step}</span><span class="${l.who==='me'?'me':'ai'}">${l.who==='me'?'你決定':'交給 AI'}：${esc(l.what)}</span></li>`).join('')}</ul>
     <p class="sub">用掉 ${START_DAYS-S.days} 天，剩 ${S.days} 天。</p>
     <div class="label">這些判定的根據</div>
-    <div class="research">${research.slice(0,3).map(r=>`<p>・${r}</p>`).join('')}</div>
+    <div class="research">${research.slice(0,3).map(r=>`<p>・${r}</p>`).join('')}<p style="color:#8a6a3a">・${APPETITE_NOTE}</p></div>
   </div>
   <div class="card" style="margin-top:12px;text-align:center">
     <p style="font-size:17px;font-weight:700">如果街上每張海報都長這樣，<br>這是你想要的世界嗎？</p>
