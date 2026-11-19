@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>我的第一張海報｜燒肉店</title>
+<meta name="description" content="7 天後開幕，做出你燒肉店的第一張海報。全部交給 AI 很快也很高級，但路人看得懂嗎？">
+<meta property="og:title" content="我的第一張海報｜燒肉店">
+<meta property="og:description" content="7 天後開幕，做出你燒肉店的第一張海報。全部交給 AI 很快也很高級，但路人看得懂嗎？">
+<meta property="og:image" content="https://merelhuang1989-source.github.io/y2k-poster-game/yakiniku/og.png">
+<meta property="og:url" content="https://merelhuang1989-source.github.io/y2k-poster-game/yakiniku/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>@font-face{font-family:'Mantou';src:url(fonts/MantouSans-Regular.woff2) format('woff2');font-display:swap}</style>
+<style>
+:root{
+  --paper:#f6f1e9;--ink:#1a1410;--mute:#6f6458;--line:#e2d8ca;
+  --red:#ff4b1f;--yellow:#ffe01a;--card:#fffdf9;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);background:var(--paper)}
+.app{max-width:440px;margin:0 auto;padding:14px 14px 40px;min-height:100vh}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.top .t{font-size:13px;color:var(--mute);letter-spacing:.06em}
+.days{display:flex;align-items:center;gap:6px;font-size:13px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:4px 10px 4px 8px}
+.days .dots{display:flex;gap:3px}
+.days .dots i{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 6px #ff7a1a}
+.days .dots i.used{background:#e6ddd0;box-shadow:none}
+.days b{font-size:15px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:18px 16px;box-shadow:4px 4px 0 var(--ink)}
+.step{font-size:12px;color:#d13a12;letter-spacing:.12em;margin-bottom:4px;font-weight:700}
+h2{font-size:22px;margin:0 0 6px;font-weight:900}
+p{line-height:1.65;margin:6px 0}
+.sub{color:var(--mute);font-size:14px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px;font:inherit;color:inherit;cursor:pointer}
+.opt:active{transform:scale(.99)}
+.opt .pv{flex:0 0 74px;height:74px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.opt .tx{flex:1}
+.opt .tx b{display:block;font-weight:700;font-size:16px}
+.opt .tx small{color:var(--mute);font-size:12.5px;line-height:1.5;display:block;margin-top:2px}
+.opt.sel{border-color:var(--ink);box-shadow:3px 3px 0 var(--red)}
+.cost{font-size:12px;border-radius:999px;padding:3px 8px;white-space:nowrap;background:#f1ebe2;color:#5a4a3a}
+.cost.ai{background:linear-gradient(90deg,#3a2a12,#7a5520);color:#ffe2a0}
+.opt[disabled]{opacity:.42;cursor:not-allowed}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;margin-top:12px;color:#fff;background:var(--ink);box-shadow:3px 3px 0 var(--red)}
+.btn.ai{color:#ffe2a0;background:linear-gradient(135deg,#0b0806,#3a2a12 60%,#0b0806);box-shadow:inset 0 0 0 1.5px #c99a45,0 6px 18px -10px #e3a43a}
+.btn.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:8px}.row>*{flex:1}
+input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border-radius:12px;border:2px solid var(--ink);background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;color:inherit}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.label{font-size:13px;color:var(--mute);margin:14px 0 4px}
+.prods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.prod{border:2px solid var(--line);border-radius:10px;background:#fff;padding:6px;cursor:pointer;text-align:center;font-size:12px;color:var(--mute)}
+.prod img{width:100%;height:70px;object-fit:contain;display:block}
+.prod img.ph{object-fit:cover;border-radius:4px}
+.prod.on{border-color:var(--ink);box-shadow:2px 2px 0 var(--red);color:var(--ink)}
+.ai-say{display:flex;gap:10px;align-items:flex-start;margin:12px 0}
+.ai-say .who{flex:0 0 34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#e3a43a 55%,#6b4210);display:flex;align-items:center;justify-content:center;font-size:12px;color:#2a1a06;font-weight:700}
+.bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:10px 12px;font-size:14.5px;line-height:1.6;border:1.5px solid var(--line)}
+.say{background:#fff;border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14.5px;line-height:1.6;border:2px solid var(--line)}
+.say b{color:#d13a12}
+.say.good{border-color:#3fb37f}.say.bad{border-color:#ff8f70}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;z-index:50;opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+
+/* poster */
+.poster{position:relative;width:100%;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:#fff;box-shadow:0 14px 30px -18px #1a1410;container-type:inline-size;user-select:none;-webkit-user-select:none}
+.poster .el{position:absolute;display:flex;align-items:center;justify-content:center}
+.poster .pbg{position:absolute;inset:0}
+.poster .el img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1.2cqw 1.6cqw #0005)}
+.poster .el img.ph{object-fit:cover;filter:none;border:1.2cqw solid #fff;box-shadow:0 1cqw 2cqw #0004}
+.poster .el img.aiglow{object-fit:cover;filter:none;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent);mask-image:radial-gradient(closest-side,#000 62%,transparent)}
+.poster svg{width:100%;height:100%;overflow:visible}
+.poster.edit .el{touch-action:none;cursor:grab;outline:1px dashed #ffffffaa;outline-offset:-1px}
+.poster.edit .el.sel{outline:2px solid #fff;box-shadow:0 0 0 2px var(--ink) inset}
+.grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(#fff7 1px,transparent 1px),linear-gradient(90deg,#fff7 1px,transparent 1px);background-size:calc(100%/12) calc(100%/15);opacity:.45}
+.hdl{position:absolute;right:-9px;bottom:-9px;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--ink);cursor:nwse-resize;z-index:5;touch-action:none}
+.chip.sw i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px;box-shadow:0 0 0 1px #0003}
+.bigt{width:100%;margin:2px 0 8px;border-radius:12px;background:#0b0806;padding:4px 8px}.bigt svg{width:100%;height:100%;display:block;overflow:visible}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tools .chip{font-size:13px;padding:7px 11px}
+.flash{position:fixed;inset:0;background:#0b0806f2;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff}
+.flash .poster{width:min(78vw,340px)}
+.flash .cd{font-size:44px;font-family:Mantou}
+.tape{position:relative;padding:14px 10px 6px}
+.tape:before,.tape:after{content:"";position:absolute;top:4px;width:70px;height:22px;background:#fffbe8cc;box-shadow:0 1px 3px #0002;z-index:2}
+.tape:before{left:6px;transform:rotate(-8deg)}.tape:after{right:6px;transform:rotate(7deg)}
+
+/* report */
+.pct{text-align:center;font-size:15px;color:var(--mute)}
+.meter{margin:10px 0}
+.meter .hd{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
+.meter .bar{height:12px;border-radius:999px;background:#ece4d8;overflow:hidden;margin-top:4px;border:1.5px solid var(--ink)}
+.meter .bar i{display:block;height:100%;background:linear-gradient(90deg,#ff4b1f,#ffb000)}
+.meter.pretty .bar i{background:repeating-linear-gradient(135deg,#e6c98c 0 6px,#f6ead0 6px 12px)}
+.meter small{color:var(--mute);font-size:12px}
+.gap{background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;margin:12px 0;font-size:14.5px;line-height:1.6}
+.twins{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.twins .cap{font-size:11px;color:var(--mute);text-align:center;margin-top:3px}
+.log{font-size:13.5px;line-height:1.7;padding-left:0;list-style:none;margin:6px 0}
+.log li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding:4px 0}
+.log .me{color:#1f8a5a;text-align:right}.log .ai{color:#a8660a;text-align:right}
+.research{font-size:13px;line-height:1.65;color:#4a3f35;background:#fff;border-radius:10px;padding:10px 12px;margin-top:8px;border:1.5px solid var(--line)}
+.research p{margin:4px 0}
+.foot{font-size:11.5px;color:var(--mute);text-align:center;margin-top:18px;line-height:1.6}
+</style>
+</head>
+<body>
+<!-- 共用：赤提灯發光字、金箔（AI 款）、AI 金光裝飾 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="goldG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff3c4"/><stop offset=".42" stop-color="#e3a43a"/>
+    <stop offset=".55" stop-color="#8a5a12"/><stop offset=".7" stop-color="#f3c867"/><stop offset="1" stop-color="#fff0c0"/>
+  </linearGradient>
+  <filter id="glowOrange" x="-30%" y="-60%" width="160%" height="220%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="b"/><feFlood flood-color="#ff8a1f"/><feComposite in2="b" operator="in" result="g"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b2"/><feFlood flood-color="#ffc56b"/><feComposite in2="b2" operator="in" result="g2"/>
+    <feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="g2"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glowRed" x="-30%" y="-60%" width="160%" height="220%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="b"/><feFlood flood-color="#ff2a10"/><feComposite in2="b" operator="in" result="g"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b2"/><feFlood flood-color="#ff7a3a"/><feComposite in2="b2" operator="in" result="g2"/>
+    <feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="g2"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glowGold" x="-30%" y="-60%" width="160%" height="220%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b"/><feFlood flood-color="#f2b33d" flood-opacity=".9"/><feComposite in2="b" operator="in" result="g"/>
+    <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="foil" x="-20%" y="-30%" width="140%" height="160%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b"/>
+    <feSpecularLighting in="b" surfaceScale="5" specularConstant="1.2" specularExponent="24" lighting-color="#fff6d8" result="spec"><feDistantLight azimuth="235" elevation="50"/></feSpecularLighting>
+    <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+    <feComposite in="specIn" in2="SourceGraphic" operator="arithmetic" k2="1" k3="1" result="lit"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="sh"/><feFlood flood-color="#f2b33d" flood-opacity=".55"/><feComposite in2="sh" operator="in" result="halo"/>
+    <feMerge><feMergeNode in="halo"/><feMergeNode in="lit"/></feMerge>
+  </filter>
+  <symbol id="s-spark" viewBox="0 0 100 100"><path d="M50 4 C54 38 62 46 96 50 C62 54 54 62 50 96 C46 62 38 54 4 50 C38 46 46 38 50 4Z"/></symbol>
+  <symbol id="s-flame" viewBox="0 0 100 100"><path d="M52 4 C60 26 82 36 82 62 C82 82 68 96 50 96 C31 96 18 82 18 64 C18 48 28 40 34 30 C36 44 42 50 48 50 C44 34 44 18 52 4Z"/></symbol>
+  <symbol id="s-burst" viewBox="0 0 100 100"><path d="M50 2 L58 30 L84 16 L70 42 L98 50 L70 58 L84 84 L58 70 L50 98 L42 70 L16 84 L30 58 L2 50 L30 42 L16 16 L42 30Z"/></symbol>
+  <symbol id="s-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="34"/></symbol>
+  <symbol id="s-kiwami" viewBox="0 0 100 100"><path d="M50 4 A46 46 0 1 1 49.9 4Z M50 16 A34 34 0 1 0 50.1 16Z" fill-rule="evenodd"/><text x="50" y="51" dy=".36em" text-anchor="middle" font-family="Mantou" font-size="40">極</text></symbol>
+</defs>
+</svg>
+
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   我的第一張海報｜燒肉店  試作 v0.1（沿用 Y2K 版 v0.2 的玩法）
+   資料都在 DATA 區，要改文字或數值只改這一區。正本：Drive「海報遊戲_燒肉_總文件（唯一正本）」
+   ========================================================= */
+const SURVEY_URL = 'https://ooopenlab.cc/preview/yyfDpRRFjwKCDO0Lup46'; // 問卷 C（目前是預覽網址）
+const START_DAYS = 7;
+const COLS = 12, ROWS = 15;          // 排版格線 12 欄 × 15 列（每格正方形）
+const TITLE_FONT = "Mantou";         // 標題：饅頭黑體（OFL）
+const BODY_FONT = "'Noto Sans TC'";  // 內文：思源黑體（Noto Sans TC）
+
+const PRODUCTS = [
+  {id:'p1', file:'img/prod_grill.webp', name:'炭火烤肉拼盤'},
+  {id:'p2', file:'img/prod_table.webp', name:'燒肉雙人套餐'},
+  {id:'p3', file:'img/u_slices.webp', name:'霜降牛薄片', photo:true},
+  {id:'p4', file:'img/u_plate.webp', name:'木盤霜降牛', photo:true},
+  {id:'p5', file:'img/prod_tongs.webp', name:'夾起來的烤牛肉'},
+  {id:'p6', file:'img/u_bowls.webp', name:'小菜和生肉片', photo:true},
+];
+const AI_MEAT = 'img/ai_meat.webp';   // AI 自己想時放的「金光發亮的和牛」
+const AI_NAMES = ['炙・燒肉','焰・燒肉','燒肉・極','炭火・匠','燃・燒肉','焔・YAKINIKU','極上和牛'];
+const NAME_HINT = /燒|焼|肉|烤|炭|牛|豬|雞|串|網/;
+
+// 背景純色（高彩度市場組；黑是 AI 預設）
+const BGS = {
+  red:   {label:'朱紅', bg:'#ff4b1f', ink:'#ffffff'},
+  yellow:{label:'檸檬黃', bg:'#ffe01a', ink:'#1a1410'},
+  green: {label:'翠綠', bg:'#00a86b', ink:'#ffffff'},
+  pink:  {label:'桃粉', bg:'#ff8fb1', ink:'#1a1410'},
+  black: {label:'黑', bg:'#0b0806', ink:'#f6e7c8'},
+};
+// 分數四項：K 一眼看懂、T 打中對的人、M 記得住、P 好看（只顯示不計分）
+const LOGOS = {
+  gold:  {label:'金色火焰字', note:'跟 AI 圖最像的那種金亮字', fx:{P:8,M:2}},
+  cow:   {label:'小牛印章', note:'店名配一隻只屬於你的小牛', fx:{M:12}},
+  stamp: {label:'圓形店章', note:'像店章，小小的也認得出來', fx:{M:10,K:3}},
+  ai:    {label:'交給 AI', note:'', fx:{M:-10,P:10}},
+};
+const PALETTES = {
+  black: {label:'黑底＋金色', note:'AI 最常給的組合，看起來很高級', bg:'black', fx:{M:-6,P:6}},
+  red:   {label:'朱紅＋白字', note:'像炭火，遠遠就知道是吃的', bg:'red', fx:{M:8,T:5}},
+  yellow:{label:'檸檬黃＋黑字', note:'整條街最亮，晚上也顯眼', bg:'yellow', fx:{M:8,T:3}},
+  green: {label:'翠綠＋白字', note:'很跳，很少燒肉店用', bg:'green', fx:{M:10,T:-4,P:-4}},
+};
+// 店名的字：赤提灯發光（白芯、黃芯），金箔是 AI 款
+const TITLE_STYLES = {
+  white:{label:'白芯橘光', fill:'#fff6e6', glow:'glowOrange', fx:{K:4}},
+  amber:{label:'黃芯紅光', fill:'#ffd84a', glow:'glowRed', fx:{K:-2,P:4}},
+  gold: {label:'金箔金光', fill:'url(#goldG)', glow:'glowGold', fx:{K:-6,P:8}},
+};
+const BRIEF = [
+  {id:'A', label:'客群：附近上班族，下班想跟朋友聚餐', line:'下班，來烤一盤', fx:{T:20}},
+  {id:'B', label:'賣什麼：炭火燒肉、雙人套餐', line:'炭火燒肉・雙人套餐', fx:{K:18}},
+  {id:'C', label:'主打：本週厚切牛舌', line:'本週主打｜厚切牛舌', fx:{K:6,M:4}},
+  {id:'D', label:'價格：兩人一桌 $1,280', line:'兩人一桌 $1,280', fx:{T:10}},
+  {id:'E', label:'店的個性：每一塊肉都是老闆自己切的', line:'每一塊肉都是老闆自己切的', fx:{M:12,T:5}},
+  {id:'F', label:'地址＋營業時間', line:'民生路 ○○ 號｜17:00–24:00', fx:{K:3}},
+  {id:'G', label:'IG 帳號', line:'IG 搜尋店名', fx:{M:3}},
+  {id:'H', label:'開幕優惠：第二盤半價', line:'開幕第二盤半價', fx:{T:3}},
+  {id:'I', label:'熱門詞：「頂級」「極致」「炙燒美味」', line:'頂級享受・炙燒的極致美味', fx:{M:-8,P:5}},
+];
+const AI_BRIEF = ['I','H'];
+
+const PEOPLE = [
+  {n:'上班族阿哲', ta:true},{n:'剛下班的工程師', ta:true},{n:'會計小美', ta:true},{n:'業務 Kevin', ta:true},
+  {n:'路過的阿姨', ta:false},{n:'外送員阿凱', ta:false},{n:'高中生 Ruby', ta:false},{n:'遛狗的爺爺', ta:false},
+];
+const RIGHT = ['燒肉店吧？看起來兩個人一千多。','炭火燒肉！一看就有肉。','是燒肉，有雙人套餐。'];
+const WRONG_SPARKLE = ['是酒吧開幕嗎？','高級牛排館吧，好像很貴。','是 AI 做的桌布吧？','我只記得金金亮亮的。'];
+const WRONG_SMALL = ['火鍋店？','賣酒的？','是抽獎活動嗎？','鐵板燒？'];
+
+const ENDINGS = [
+  {min:60, title:'寶藏小店', text:'雖然很多東西是 AI 生成的，但每個關鍵決定都是你做的。路人三秒就知道你賣燒肉，而且記得住你。'},
+  {min:40, title:'一間店', text:'好像有點意思，但又沒有讓人想停下來。路人看到了，只是沒記住，也不太確定是不是給自己的。'},
+  {min:0,  title:'看不懂', text:'很高級、很閃，可是沒人知道你在賣什麼。開幕那天，大家拍了照，然後走去隔壁。'},
+];
+const RESEARCH = {
+  clutter:'Pieters、Wedel 與 Batra（2010，Journal of Marketing）：畫面細節塞太滿，會搶走大家對品牌的注意，也會降低好感。',
+  product:'Pieters 與 Wedel（2004，Journal of Marketing）：圖像是平面廣告裡最能抓住目光的元素。肉的照片太小，等於沒放。',
+  distinct:'Romaniuk（2018，Ehrenberg-Bass Institute）：讓人認出你的，是只屬於你的顏色、字和符號，不是當下流行的樣子。',
+  pretty:'Lindgaard 等人（2006）：好不好看大約 0.05 秒就決定了，但那只是第一眼的好感，不等於看懂，也不等於買單。',
+  audience:'Labrecque 與 Milne（2012）：顏色會讓人推測品牌的個性。選色之前，要先知道是給誰看。',
+};
+
+/* ===================== 狀態 ===================== */
+let S;
+function reset(){
+  S = {
+    step:'intro', days:START_DAYS, luck:Math.round(Math.random()*10-5),
+    name:'', nameAI:null, aiNamePick:shuffle(AI_NAMES).slice(0,3),
+    logo:null, palette:null, titleStyle:null, colorAI:null, bg:null,
+    brief:new Set(), briefAI:null, products:new Set(['p1','p3']),
+    elements:[], layoutSelf:null, tested:false, revised:false, exportJpg:null,
+    log:[], sel:null, testResult:null,
+  };
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const $ = s => document.querySelector(s);
+const app = $('#app');
+function spend(n){S.days=Math.max(0,S.days-n)}
+function canPay(n){return S.days>=n}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2600)}
+function logStep(step, who, what){S.log=S.log.filter(l=>l.step!==step);S.log.push({step,who,what})}
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const briefLines = () => (S.briefAI?AI_BRIEF:[...S.brief]).map(id=>BRIEF.find(b=>b.id===id).line);
+const prodOf = pid => PRODUCTS.find(x=>x.id===pid);
+
+/* ===================== 赤提灯發光字 ===================== */
+// 每段字固定用 100 單位排，再用 viewBox 縮放到格子大小，所以放多大光暈都一樣。
+const FS=100, LS=4, LH=118;
+const _cv=document.createElement('canvas').getContext('2d');
+function measure(str, font=TITLE_FONT){_cv.font=`${FS}px ${font}`;return _cv.measureText(str).width + LS*[...str].length}
+function tokens(text){ // 英文以單字為單位、中文以字為單位
+  const out=[]; let buf='';
+  for(const ch of text){ if(/[A-Za-z0-9]/.test(ch)){buf+=ch} else { if(buf){out.push(buf);buf=''} out.push(ch) } }
+  if(buf)out.push(buf); return out;
+}
+function wrap(text,n,font){
+  if(n===1)return [text];
+  const tk=tokens(text), target=measure(text,font)/n, lines=[]; let cur='';
+  for(const t of tk){ if(cur && lines.length<n-1 && measure(cur+t,font)>target*1.08){lines.push(cur.trim());cur=t.trimStart()} else cur+=t }
+  lines.push(cur.trim()); return lines.filter(Boolean);
+}
+// w,h：框的比例（格數）；ts：TITLE_STYLES 的 key
+function textSVG(text, w, h, {ts='white', maxLines=3}={}){
+  const st=TITLE_STYLES[ts]; let best=null;
+  for(let n=1;n<=maxLines;n++){
+    const lines=wrap(text,n); const mw=Math.max(...lines.map(l=>measure(l)))+FS*.5; const mh=lines.length*LH+FS*.5;
+    const sc=Math.min(w/mw,h/mh);
+    if(!best||sc>best.sc*1.04)best={sc,lines,mw,mh};
+  }
+  const {lines,mw,mh}=best;
+  const vw=Math.max(mw,mh*w/h), vh=vw*h/w;
+  const y0=vh/2-(lines.length-1)*LH/2;
+  const body=lines.map((ln,i)=>`<text x="${vw/2}" y="${y0+i*LH}" dy=".36em" text-anchor="middle" font-size="${FS}" letter-spacing="${LS}" font-family="${TITLE_FONT}">${esc(ln)}</text>`).join('');
+  // 外圈深色細邊：亮色底上也看得清楚；再疊發光
+  return `<svg viewBox="0 0 ${vw.toFixed(1)} ${vh.toFixed(1)}" preserveAspectRatio="xMidYMid meet"><g filter="url(#${st.glow})"><g fill="${st.fill}" stroke="#1a1410" stroke-width="7" stroke-linejoin="round" paint-order="stroke">${body}</g></g></svg>`;
+}
+
+/* ===================== 計分（唯一的規則來源） ===================== */
+function scores(st=S){
+  let K=45,T=35,M=50,P=50; const flags=new Set();
+  const add=fx=>{K+=fx.K||0;T+=fx.T||0;M+=fx.M||0;P+=fx.P||0};
+  if(st.nameAI){M-=15;flags.add('distinct')} else if(st.name){M+=5; if(NAME_HINT.test(st.name))K+=6; if([...st.name].length>8)K-=5}
+  if(st.logo){add(LOGOS[st.logo].fx); if(st.logo==='ai')flags.add('distinct')}
+  if(st.palette){add(PALETTES[st.palette].fx); if(st.palette==='yellow'&&st.brief.has('E'))T+=5}
+  if(st.titleStyle)add(TITLE_STYLES[st.titleStyle].fx);
+  if(st.colorAI){M-=4;flags.add('distinct')}
+  const items = st.briefAI ? AI_BRIEF : [...st.brief];
+  items.forEach(id=>add(BRIEF.find(b=>b.id===id).fx));
+  if(items.length>5){K-=15;flags.add('clutter')}
+  if(!items.includes('A'))flags.add('audience');
+  if(st.products.size>=5){K-=8;flags.add('clutter')}
+  const els=st.elements;
+  if(els.length){
+    const area=e=>e.w*e.h;
+    const prods=els.filter(e=>e.type==='product');
+    const maxA=Math.max(0,...prods.map(area));
+    if(maxA>=36)K+=15; else if(maxA>=16)K+=5; else K-=20;
+    if(maxA<36)flags.add('product');
+    const titles=els.filter(e=>e.type==='title');
+    const nameA=Math.max(0,...titles.filter(e=>!e.txt||e.txt===st.name).map(area));
+    const otherA=Math.max(0,...titles.filter(e=>e.txt&&e.txt!==st.name).map(area));
+    if(nameA>=54)K+=10; else if(nameA<=12)K-=10;
+    if(otherA>nameA){K-=4;M-=8;flags.add('distinct')}
+    const n=els.filter(e=>e.type==='sticker').length;
+    P+=Math.min(16,n*2);
+    if(n>=8){K-=15;flags.add('clutter')} else if(n>=4){K-=8;flags.add('clutter')}
+    const info=els.find(e=>e.type==='info');
+    if(info && items.length>4)K-=10;
+    if(!st.layoutSelf){M-=8;flags.add('distinct')}
+    if(st.bg==='black'){M-=4}
+  }
+  if(st.tested)K+=5;
+  if(st.exportJpg)K-=8;
+  K+=st.luck;
+  const c=v=>Math.max(0,Math.min(100,Math.round(v)));
+  K=c(K);T=c(T);M=c(M);P=c(P);
+  return {K,T,M,P,total:Math.round(.4*K+.3*T+.3*M),flags};
+}
+
+/* ===================== 海報 ===================== */
+function logoSVG(kind, name, ink){
+  const ch=[...(name||'燒肉')].filter(c=>c.trim()&&!/[・·]/.test(c)).slice(0,2).join('');
+  if(kind==='cow') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#fff6e6" stroke="${ink==='#ffffff'?'#1a1410':ink}" stroke-width="6"/><image href="img/char_cow.webp" x="16" y="20" width="68" height="60" preserveAspectRatio="xMidYMid meet"/></svg>`;
+  if(kind==='stamp') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="43" fill="none" stroke="${ink}" stroke-width="6"/><circle cx="50" cy="50" r="35" fill="none" stroke="${ink}" stroke-width="2"/><text x="50" y="50" dy=".36em" text-anchor="middle" font-family="${TITLE_FONT}" font-size="${[...ch].length>1?28:40}" fill="${ink}">${esc(ch)}</text></svg>`;
+  return `<svg viewBox="0 0 100 100"><g filter="url(#foil)"><use href="#s-flame" x="6" y="2" width="88" height="96" fill="url(#goldG)"/></g><text x="50" y="62" dy=".36em" text-anchor="middle" font-family="${TITLE_FONT}" font-size="24" fill="#2a1a06">${esc(ch)}</text></svg>`;
+}
+const STICKERS=['s-spark','s-flame','s-burst','s-kiwami','s-spark','s-dot','s-flame','s-spark','s-burst','s-kiwami'];
+function stickerSVG(sym){return `<svg viewBox="0 0 100 100"><g filter="url(#foil)"><use href="#${sym}" x="10" y="10" width="80" height="80" fill="url(#goldG)"/></g></svg>`}
+
+function ctxNow(){return {name:S.name||'炙・燒肉', bg:S.bg||'black', ts:S.titleStyle||'gold', lines:briefLines(), logo:S.logo==='ai'?'gold':S.logo}}
+function renderPoster(els, opts={}){
+  const cx=opts.ctx||ctxNow(); const nb=BGS[cx.bg];
+  let html=`<div class="pbg" style="background:${nb.bg}"></div>`;
+  for(const e of els){
+    const pos=`left:${e.c*100/COLS}%;top:${e.r*100/ROWS}%;width:${e.w*100/COLS}%;height:${e.h*100/ROWS}%;`;
+    let inner='';
+    if(e.type==='title') inner=textSVG(e.txt||cx.name, e.w, e.h, {ts:cx.ts});
+    else if(e.type==='logo') inner=logoSVG(cx.logo||'gold', cx.name, nb.ink);
+    else if(e.type==='product'){const p=prodOf(e.pid); inner=`<img class="${p.photo?'ph':''}" src="${p.file}" alt="">`}
+    else if(e.type==='aimeat') inner=`<img class="aiglow" src="${AI_MEAT}" alt="">`;
+    else if(e.type==='sticker') inner=stickerSVG(e.sym);
+    else if(e.type==='info') inner=infoSVG(cx.lines, e, nb.ink);
+    const sel = opts.edit && S.sel===e.id;
+    html+=`<div class="el ${e.type} ${sel?'sel':''}" data-id="${e.id}" style="${pos}">${inner}${sel?'<i class="hdl" data-hdl="1"></i>':''}</div>`;
+  }
+  return `<div class="poster ${opts.edit?'edit':''}" ${opts.id?`id="${opts.id}"`:''}>${html}${opts.edit?'<div class="grid"></div>':''}</div>`;
+}
+// 文字資訊：思源黑體粗體、多行、左對齊，字級跟著框放大縮小
+function infoSVG(lines, e, ink){
+  if(!lines.length)return '';
+  const mw=Math.max(...lines.map(l=>measure(l,BODY_FONT)))*0.92+20, mh=lines.length*LH+20;
+  const vw=Math.max(mw,mh*e.w/e.h), vh=vw*e.h/e.w; const y0=vh/2-(lines.length-1)*LH/2;
+  return `<svg viewBox="0 0 ${vw.toFixed(1)} ${vh.toFixed(1)}" preserveAspectRatio="xMidYMid meet">${lines.map((l,i)=>`<text x="${((vw-mw)/2+10).toFixed(1)}" y="${y0+i*LH}" dy=".35em" font-size="${FS*0.9}" font-family="${BODY_FONT}" font-weight="700" fill="${ink}">${esc(l)}</text>`).join('')}</svg>`;
+}
+
+let uid=0;
+function aiLayout(name=S.name, st=S){
+  const els=[]; const R=(c,r,w,h)=>({c,r,w,h});
+  if(st.briefAI){
+    els.push({id:++uid,type:'title',txt:'極上燒肉 YAKINIKU',...R(0,0,12,3)});
+    els.push({id:++uid,type:'aimeat',...R(3,5,6,5)});
+    [[0,3],[4,3],[8,3],[0,9],[4,10],[9,9]].forEach((p,i)=>els.push({id:++uid,type:'product',pid:PRODUCTS[i].id,...R(p[0],p[1],3,3)}));
+    shuffle([[3,3],[7,4],[0,6],[10,7],[3,8],[8,8],[0,12],[10,12],[3,6],[7,6]]).forEach((p,i)=>els.push({id:++uid,type:'sticker',sym:STICKERS[i%STICKERS.length],...R(Math.min(p[0],10),p[1],2,2)}));
+    els.push({id:++uid,type:'title',txt:name,...R(0,13,7,2)});
+    els.push({id:++uid,type:'info',...R(7,13,5,2)});
+    return els;
+  }
+  els.push({id:++uid,type:'title',...R(0,0,12,3)});
+  const prods=[...st.products];
+  const slots = prods.length<=2 ? [[0,3,6,6],[6,5,6,6]] : [[0,3,4,4],[4,3,4,4],[8,3,4,4],[0,7,4,4],[4,7,4,4],[8,7,4,4]];
+  prods.forEach((pid,i)=>{const s=slots[i%slots.length];els.push({id:++uid,type:'product',pid,...R(...s)})});
+  shuffle([[0,3],[10,3],[4,7],[10,9],[0,9],[7,3],[10,11],[0,11],[5,11],[8,11]]).slice(0,9)
+    .forEach((p,i)=>els.push({id:++uid,type:'sticker',sym:STICKERS[i%STICKERS.length],...R(p[0],p[1],2,2)}));
+  els.push({id:++uid,type:'info',...R(0,12,9,3)});
+  els.push({id:++uid,type:'logo',...R(9,12,3,3)});
+  return els;
+}
+
+/* ===================== 畫面 ===================== */
+function daysBar(){
+  let d='';for(let i=0;i<START_DAYS;i++)d+=`<i class="${i>=S.days?'used':''}"></i>`;
+  return `<div class="top"><div class="t">燒肉店・第一張海報</div><div class="days">開幕倒數 <b>${S.days}</b> 天<span class="dots">${d}</span></div></div>`;
+}
+function noTimeNote(cost){return canPay(cost)?'':`<p class="sub" style="color:#d13a12">開幕倒數不夠了，這一步只能交給 AI。</p>`}
+const bigTitle=(t,ts='white',w=10,h=3)=>`<div class="bigt" style="aspect-ratio:${w}/${h}">${textSVG(t,w,h,{ts,maxLines:2})}</div>`;
+
+const V = {};
+V.intro = () => `
+  ${bigTitle('我的第一張海報','white',10,3.4)}
+  <div class="card">
+    <p style="font-size:17px;font-weight:700">「現在 AI 這麼方便，我也來開一間燒肉店吧！」</p>
+    <p class="sub">你的店 7 天後開幕，現在要做第一張宣傳海報。每一步都可以自己決定，或交給 AI。自己做比較花時間，交給 AI 很快，而且看起來都很高級。</p>
+    <p class="sub">開幕那天，路人只會看你的海報 3 秒。</p>
+    <button class="btn" data-go="name">開始做海報</button>
+  </div>`;
+V.name = () => `
+  <div class="card">
+    <div class="step">STEP 1／7　店名</div>
+    <h2>你的店叫什麼？</h2>
+    <p class="sub">好記、念得出來，最好一聽就知道賣什麼。</p>
+    <input type="text" id="nm" maxlength="12" placeholder="例如：阿明燒肉" value="${S.nameAI?'':esc(S.name)}">
+    <button class="btn" data-act="nameSelf" ${canPay(1)?'':'disabled'}>用這個名字 <span class="cost">−1 天</span></button>
+    ${noTimeNote(1)}
+    <div class="label">或是讓 AI 取一個（不花時間）</div>
+    <div class="chips">${S.aiNamePick.map(n=>`<button class="chip" data-act="nameAI" data-v="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+  </div>`;
+function optBtn(act, v, title, note, cost, pv=''){
+  const dis = cost>0 && !canPay(cost);
+  return `<button class="opt" data-act="${act}" data-v="${v}" ${dis?'disabled':''}>
+    ${pv?`<div class="pv">${pv}</div>`:''}
+    <div class="tx"><b>${title}</b>${note?`<small>${note}</small>`:''}</div>
+    <span class="cost ${cost?'':'ai'}">${cost?`−${cost} 天`:'不花時間'}</span></button>`;
+}
+V.logo = () => `<div class="card">
+    <div class="step">STEP 2／7　Logo</div>
+    <h2>「${esc(S.name)}」的 Logo</h2>
+    <p class="sub">之後每一張圖都會放它。它是客人認出你的記號。</p>
+    <div class="opts">${['gold','cow','stamp'].map(k=>optBtn('logo',k,LOGOS[k].label,LOGOS[k].note,1,`<div style="background:${BGS.red.bg};width:100%;height:100%;padding:8px">${logoSVG(k,S.name,'#ffffff')}</div>`)).join('')}</div>
+    ${noTimeNote(1)}
+    <button class="btn ai" data-act="logo" data-v="ai">交給 AI 幫我做 ✨ <span class="cost ai">不花時間</span></button>
+  </div>`;
+V.color = () => {
+  const pk=S._pal||'black', ts=S._ts||'gold';
+  return `<div class="card">
+    <div class="step">STEP 3／7　顏色和字</div>
+    <h2>店的顏色</h2>
+    <div class="opts">${Object.keys(PALETTES).map(k=>`<button class="opt ${S._pal===k?'sel':''}" data-act="pickPal" data-v="${k}"><div class="pv" style="background:${BGS[PALETTES[k].bg].bg}"></div><div class="tx"><b>${PALETTES[k].label}</b><small>${PALETTES[k].note}</small></div></button>`).join('')}</div>
+    <div class="label">店名的字（饅頭黑體，像巷口亮著的燈籠招牌）</div>
+    <div class="chips">${Object.keys(TITLE_STYLES).map(k=>`<button class="chip ${S._ts===k?'on':''}" data-act="pickTs" data-v="${k}">${TITLE_STYLES[k].label}</button>`).join('')}</div>
+    <div style="aspect-ratio:4/1.3;margin-top:10px;border-radius:10px;overflow:hidden;padding:6px 12px;background:${BGS[PALETTES[pk].bg].bg}">${textSVG(S.name,4,1.1,{ts,maxLines:2})}</div>
+    <button class="btn" data-act="colorSelf" ${S._pal&&S._ts&&canPay(1)?'':'disabled'}>就用這組 <span class="cost">−1 天</span></button>
+    ${noTimeNote(1)}
+    <button class="btn ai" data-act="colorAI">交給 AI 配色 ✨ <span class="cost ai">不花時間</span></button>
+  </div>`;
+};
+V.brief = () => `
+  <div class="card">
+    <div class="step">STEP 4／7　給 AI 的需求單</div>
+    <h2>你要告訴 AI 什麼？</h2>
+    <p class="sub">勾選的內容，AI 會寫進海報。AI 只知道你告訴它的事。</p>
+    <div class="chips">${BRIEF.map(b=>`<button class="chip ${S.brief.has(b.id)?'on':''}" data-act="brief" data-v="${b.id}">${b.label}</button>`).join('')}</div>
+    <div class="label">海報上要放哪些菜？（已選 ${S.products.size} 樣）</div>
+    <div class="prods">${PRODUCTS.map(p=>`<div class="prod ${S.products.has(p.id)?'on':''}" data-act="prod" data-v="${p.id}"><img class="${p.photo?'ph':''}" src="${p.file}" alt="">${p.name}</div>`).join('')}</div>
+    <button class="btn" data-act="briefSelf" ${S.brief.size&&S.products.size&&canPay(1)?'':'disabled'}>送出需求單 <span class="cost">−1 天</span></button>
+    ${noTimeNote(1)}
+    <button class="btn ai" data-act="briefAI">不用寫，AI 自己會想 ✨ <span class="cost ai">不花時間</span></button>
+  </div>`;
+V.gen = () => `<div class="card"><div class="step">STEP 5／7　AI 生成</div><div id="genbox"><p class="sub" style="text-align:center;padding:40px 0">AI 正在生成你的海報⋯⋯</p></div></div>`;
+function genDone(){
+  const n=S.elements.filter(e=>e.type==='sticker').length;
+  const msg = S.briefAI
+    ? '完成！我做了一張超高級的燒肉海報：黑底、金光、一塊會發光的和牛，標題寫「極上燒肉 YAKINIKU」，六道菜全放上去了，現在很流行這種風格喔 ✨（店名我放在最下面）'
+    : `完成！我幫你加了 ${n} 個金色火花，還把你給的 ${briefLines().length} 項資訊都放進去了。很吸睛吧？✨`;
+  $('#genbox').innerHTML = `${renderPoster(S.elements)}<div class="ai-say"><div class="who">AI</div><div class="bubble">${msg}</div></div><button class="btn" data-go="layout">下一步</button>`;
+}
+V.layout = () => `
+  <div class="card">
+    <div class="step">STEP 6／7　排版</div>
+    <h2>要自己調整版面嗎？</h2>
+    <p class="sub">自己排要花 2 天。你可以拖動、放大縮小、刪掉東西，每樣東西都會對齊 12×15 的格子。</p>
+    ${renderPoster(S.elements)}
+    <div class="row"><button class="btn" data-act="layoutSelf" ${canPay(2)?'':'disabled'}>自己排 <span class="cost">−2 天</span></button>
+    <button class="btn ai" data-act="layoutAI">直接用 AI 版 ✨</button></div>
+    ${noTimeNote(2)}
+  </div>`;
+V.editor = () => {
+  const sel=S.elements.find(e=>e.id===S.sel);
+  const inPoster=new Set(S.elements.filter(e=>e.type==='product').map(e=>e.pid));
+  return `<div class="card">
+    <div class="step">STEP 6／7　自己排版</div>
+    <p class="sub" style="margin-top:0">點一下選取，拖動移動，拉右下角的圓點放大縮小。字也可以放大。</p>
+    <div id="edwrap">${renderPoster(S.elements,{edit:true,id:'edposter'})}</div>
+    <div class="tools">${sel?`<button class="chip" data-act="grow">＋ 放大</button><button class="chip" data-act="shrink">－ 縮小</button>${sel.type==='title'&&(!sel.txt||sel.txt===S.name)?'':'<button class="chip" data-act="del">刪掉</button>'}`:'<span class="sub" style="font-size:13px">先點選海報上的一樣東西</span>'}</div>
+    <div class="label">背景顏色</div>
+    <div class="chips">${Object.keys(BGS).map(k=>`<button class="chip sw ${S.bg===k?'on':''}" data-act="bg" data-v="${k}"><i style="background:${BGS[k].bg}"></i>${BGS[k].label}</button>`).join('')}</div>
+    <div class="label">菜（點一下放進去或拿掉）</div>
+    <div class="prods">${PRODUCTS.map(p=>`<div class="prod ${inPoster.has(p.id)?'on':''}" data-act="togProd" data-v="${p.id}"><img class="${p.photo?'ph':''}" src="${p.file}" alt="">${p.name}</div>`).join('')}</div>
+    <div class="chips"><button class="chip" data-act="addSticker">＋ 加一個金色火花</button>${S.elements.some(e=>e.type==='info')?'':'<button class="chip" data-act="addInfo">＋ 放回文字資訊</button>'}${S.elements.some(e=>e.type==='logo')?'':'<button class="chip" data-act="addLogo">＋ 放回 Logo</button>'}</div>
+    <button class="btn" data-act="layoutDone">排好了</button>
+  </div>`;
+};
+V.test = () => `
+  <div class="card">
+    <div class="step">STEP 7／7　給別人看</div>
+    <h2>開幕前，要先找人看看嗎？</h2>
+    <p class="sub">找 3 個路過的人，每人只看 3 秒，問他們「這間店在賣什麼？」。設計師朋友也會給你一句話。</p>
+    ${renderPoster(S.elements)}
+    <div class="row"><button class="btn" data-act="testGo" ${canPay(1)?'':'disabled'}>找人看 3 秒 <span class="cost">−1 天</span></button>
+    <button class="btn ghost" data-act="testSkip">不用，直接送印</button></div>
+    ${noTimeNote(1)}
+  </div>`;
+V.testResult = () => {
+  const r=S.testResult;
+  return `<div class="card">
+    <div class="step">3 秒測試結果</div>
+    <h2>${r.right}／3 個人看懂了</h2>
+    ${r.lines.map(l=>`<div class="say ${l.ok?'good':'bad'}"><b>${l.who}</b>：「${l.say}」${l.ta?`<br><small class="sub">${l.ta}</small>`:''}</div>`).join('')}
+    <div class="say"><b>設計師朋友</b>：「${r.friend}」</div>
+    ${S.revised?'':`<button class="btn" data-act="revise" ${canPay(1)?'':'disabled'}>回去改一次 <span class="cost">−1 天</span></button>`}
+    <button class="btn ${S.revised?'':'ghost'}" data-go="export">就這樣，送印</button>
+  </div>`;
+};
+V.export = () => `
+  <div class="card">
+    <div class="step">送印＋張貼</div>
+    <h2>要交什麼檔案給印刷廠？</h2>
+    <p class="sub">海報要印成 A2 貼在店門口，另外做一條橫幅。</p>
+    <div class="opts">
+      ${optBtn('exp','layer','整理分層檔給印刷廠','字和圖分開、尺寸正確，印大也清楚',1)}
+      ${optBtn('exp','jpg','直接存 JPG 送印','最快，印刷廠會自己放大',0)}
+    </div>
+    ${noTimeNote(1)}
+  </div>`;
+function twinPoster(name){
+  const els=aiLayout(name,{briefAI:false,products:new Set(['p1','p3','p4'])});
+  return renderPoster(els,{ctx:{name, bg:'black', ts:'gold', lines:['頂級享受・炙燒的極致美味','開幕第二盤半價'], logo:'gold'}});
+}
+V.end = () => {
+  const sc=scores(); const end=ENDINGS.find(e=>sc.total>=e.min);
+  const research=[];
+  if(sc.flags.has('clutter'))research.push(RESEARCH.clutter);
+  if(sc.flags.has('product'))research.push(RESEARCH.product);
+  if(sc.flags.has('distinct'))research.push(RESEARCH.distinct);
+  if(sc.flags.has('audience'))research.push(RESEARCH.audience);
+  if(sc.P-sc.total>=25||research.length<2)research.push(RESEARCH.pretty);
+  const m=(lab,v,note,cls='')=>`<div class="meter ${cls}"><div class="hd"><span>${lab}</span><span>${v}</span></div><div class="bar"><i style="width:${v}%"></i></div>${note?`<small>${note}</small>`:''}</div>`;
+  const gapLine = sc.P-sc.total>=20 ? `好看 ${sc.P} 分，但總分只有 ${sc.total}。<br>好看不等於賣得掉，要讓人看得懂、記得住。`
+    : sc.total>=60 ? `總分 ${sc.total}，好看 ${sc.P}。你沒有只追求高級感，而是讓人看得懂、記得住。`
+    : `總分 ${sc.total}，好看 ${sc.P}。好看是加分，看得懂、記得住才是重點。`;
+  const aiLook = !S.layoutSelf || S.nameAI || S.colorAI;
+  const twinNames=shuffle(AI_NAMES.filter(n=>n!==S.name)).slice(0,2);
+  return `
+  ${bigTitle(end.title,'white',10,2.6)}
+  <div class="pct" id="score" data-total="${sc.total}" data-k="${sc.K}" data-t="${sc.T}" data-m="${sc.M}" data-p="${sc.P}">「${esc(S.name)}」的海報檢測：${sc.total}%</div>
+  <div class="card" style="margin-top:12px">
+    <div class="tape">${renderPoster(S.elements,{id:'final'})}</div>
+    <p style="margin-top:12px">${end.text}</p>
+    <div class="gap">${gapLine}</div>
+    ${m('一眼看懂',sc.K,'3 秒內知道你在賣什麼嗎？（占 40%）')}
+    ${m('打中對的人',sc.T,'想吸引的客群會覺得「這是給我的」嗎？（占 30%）')}
+    ${m('記得住',sc.M,'會不會跟隔壁撞臉？（占 30%）')}
+    ${m('好看',sc.P,'只顯示，不計分','pretty')}
+  </div>
+  ${aiLook?`<div class="card" style="margin-top:12px"><h2 style="font-size:18px">同一天開幕的隔壁兩家</h2><p class="sub">他們也請 AI 做了海報。</p>
+    <div class="twins"><div>${renderPoster(S.elements)}<div class="cap">你</div></div>${twinNames.map((n,i)=>`<div>${twinPoster(n)}<div class="cap">${i?'再隔壁':'隔壁'}</div></div>`).join('')}</div></div>`:''}
+  <div class="card" style="margin-top:12px">
+    <h2 style="font-size:18px">哪些是你決定的？</h2>
+    <ul class="log">${S.log.map(l=>`<li><span>${l.step}</span><span class="${l.who==='me'?'me':'ai'}">${l.who==='me'?'你決定':'交給 AI'}：${esc(l.what)}</span></li>`).join('')}</ul>
+    <p class="sub">用掉 ${START_DAYS-S.days} 天，剩 ${S.days} 天。</p>
+    <div class="label">這些判定的根據</div>
+    <div class="research">${research.slice(0,3).map(r=>`<p>・${r}</p>`).join('')}</div>
+  </div>
+  <div class="card" style="margin-top:12px;text-align:center">
+    <p style="font-size:17px;font-weight:700">如果街上每張海報都長這樣，<br>這是你想要的世界嗎？</p>
+    <a class="btn" href="${SURVEY_URL}" target="_blank" rel="noopener" style="text-decoration:none">回答問卷（約 2 分鐘）</a>
+    <div class="row"><button class="btn ghost" data-act="copy">複製遊戲連結</button><button class="btn ghost" data-act="again">再玩一次</button></div>
+    <p class="sub" style="font-size:12.5px">想分享結果，截圖這一頁就可以。</p>
+  </div>
+  <div class="foot">試作版 v0.1｜畢業製作《這是你想要的世界嗎？》<br>圖：Kiki 以 AI 生成、Unsplash｜字體：饅頭黑體 Mantou Sans（SIL OFL 1.1）、思源黑體 Noto Sans TC（SIL OFL 1.1）</div>`;
+};
+
+/* ===================== 流程 ===================== */
+function go(step){
+  if(S.days<=0){
+    if(step==='logo'&&S.logo===null){S.logo='ai';logStep('Logo','ai','時間不夠，交給 AI');autoAI('Logo');return go('color')}
+    if(step==='color'&&S.palette===null){applyAIColor();logStep('顏色和字','ai','時間不夠，交給 AI');autoAI('顏色和字');return go('brief')}
+    if(step==='brief'&&S.briefAI===null){S.briefAI=true;S.products=new Set(PRODUCTS.map(p=>p.id));logStep('需求單','ai','時間不夠，交給 AI');autoAI('需求單');return go('gen')}
+  }
+  S.step=step;S.sel=null;render();window.scrollTo({top:0,behavior:'smooth'});
+  if(step==='gen'){setTimeout(()=>{S.elements=aiLayout();genDone()},1400)}
+}
+function render(){
+  app.innerHTML = (S.step==='intro'||S.step==='end'?'':daysBar()) + V[S.step]();
+  if(S.step==='editor')bindEditor();
+  if(S.step==='gen'&&S.elements.length)genDone();
+}
+function autoAI(stepLabel){toast(`開幕倒數用完了，${stepLabel}交給 AI。`)}
+function applyAIColor(){S.palette='black';S.titleStyle='gold';S.bg='black';S.colorAI=true}
+
+app.addEventListener('click', e=>{
+  const t=e.target.closest('[data-act],[data-go]'); if(!t||t.disabled)return;
+  if(t.dataset.go){go(t.dataset.go);return}
+  const a=t.dataset.act, v=t.dataset.v;
+  switch(a){
+    case 'nameSelf':{const n=$('#nm').value.trim(); if(!n){toast('先輸入店名');return} S.name=n;S.nameAI=false;spend(1);logStep('店名','me',n);go('logo');break}
+    case 'nameAI': S.name=v;S.nameAI=true;logStep('店名','ai',v);toast(`Threads 上已經有 12 家叫「${v}」的店⋯⋯`);go('logo');break;
+    case 'logo': S.logo=v; if(v!=='ai'){spend(1);logStep('Logo','me',LOGOS[v].label)}else logStep('Logo','ai','金色火焰字'); go('color');break;
+    case 'pickPal': S._pal=v; render(); break;
+    case 'pickTs': S._ts=v; render(); break;
+    case 'colorSelf': S.palette=S._pal;S.titleStyle=S._ts;S.bg=PALETTES[S._pal].bg;S.colorAI=false;spend(1);logStep('顏色和字','me',`${PALETTES[S._pal].label}・${TITLE_STYLES[S._ts].label}`);go('brief');break;
+    case 'colorAI': applyAIColor();logStep('顏色和字','ai','黑底＋金箔字');go('brief');break;
+    case 'brief': S.brief.has(v)?S.brief.delete(v):S.brief.add(v); render(); break;
+    case 'prod': S.products.has(v)?S.products.delete(v):S.products.add(v); render(); break;
+    case 'briefSelf': S.briefAI=false;spend(1);logStep('需求單','me',`寫了 ${S.brief.size} 項、放 ${S.products.size} 樣菜`);go('gen');break;
+    case 'briefAI': S.briefAI=true;S.brief=new Set();S.products=new Set(PRODUCTS.map(p=>p.id));logStep('需求單','ai','AI 自己想');go('gen');break;
+    case 'layoutSelf': spend(2);S.layoutSelf=true;go('editor');break;
+    case 'layoutAI': S.layoutSelf=false;logStep('排版','ai','直接用 AI 版');go('test');break;
+    case 'grow': case 'shrink': resizeSel(a==='grow'?1:-1);break;
+    case 'del': S.elements=S.elements.filter(x=>x.id!==S.sel);S.sel=null;render();break;
+    case 'bg': S.bg=v; render(); break;
+    case 'togProd':{const ex=S.elements.find(x=>x.type==='product'&&x.pid===v); if(ex)S.elements=S.elements.filter(x=>x!==ex); else addProduct(v); render();break}
+    case 'addSticker': S.elements.push({id:++uid,type:'sticker',sym:STICKERS[Math.floor(Math.random()*STICKERS.length)],c:10,r:0,w:2,h:2});render();break;
+    case 'addInfo': S.elements.push({id:++uid,type:'info',c:0,r:12,w:9,h:3});render();break;
+    case 'addLogo': S.elements.push({id:++uid,type:'logo',c:9,r:12,w:3,h:3});render();break;
+    case 'layoutDone': logStep('排版','me','自己調整版面'); if(S.tested){S.testResult=runTest();go('testResult')} else go('test'); break;
+    case 'testGo': spend(1);S.tested=true;flashTest();break;
+    case 'testSkip': logStep('給別人看','ai','沒找人看');go('export');break;
+    case 'revise': spend(1);S.revised=true;S.layoutSelf=true;go('editor');break;
+    case 'exp': S.exportJpg = v==='jpg'; if(v==='layer'){spend(1);logStep('送印','me','分層檔')}else logStep('送印','ai','直接存 JPG'); go('end');break;
+    case 'again': reset(); go('intro'); break;
+    case 'copy': try{navigator.clipboard.writeText(location.href).then(()=>toast('已複製連結'),()=>toast('請手動複製網址'))}catch(err){toast('請手動複製網址')} break;
+  }
+});
+function addProduct(pid){
+  const taken=S.elements.filter(x=>x.type==='product').length;
+  const spots=[[0,3,6,6],[6,5,6,6],[3,4,6,6],[0,9,5,4]];
+  const s=spots[taken%spots.length];
+  S.elements.push({id:++uid,type:'product',pid,c:s[0],r:s[1],w:s[2],h:s[3]});
+}
+
+/* ===================== 排版編輯 ===================== */
+function clampEl(e){e.w=Math.max(1,Math.min(COLS,e.w));e.h=Math.max(1,Math.min(ROWS,e.h));e.c=Math.max(0,Math.min(COLS-e.w,e.c));e.r=Math.max(0,Math.min(ROWS-e.h,e.r))}
+function resizeSel(d){
+  const e=S.elements.find(x=>x.id===S.sel); if(!e)return;
+  const step=2*d;
+  if(e.type==='title'||e.type==='info'){ // 字：等比例放大；寬已經滿版時改成加高
+    if(d>0&&e.w>=COLS){e.h+=1}
+    else {const k=(e.w+step)/e.w; e.w+=step; e.h=Math.max(1,Math.round(e.h*k));}
+  } else { e.w+=step; e.h+=step; }
+  if(d>0){ if(e.c+e.w>COLS)e.c=COLS-e.w; if(e.r+e.h>ROWS)e.r=ROWS-e.h; }
+  clampEl(e); render();
+}
+function bindEditor(){
+  const P=$('#edposter'); if(!P)return;
+  let drag=null;
+  P.addEventListener('pointerdown',ev=>{
+    const el=ev.target.closest('.el'); if(!el){S.sel=null;render();return}
+    const id=+el.dataset.id; const e=S.elements.find(x=>x.id===id);
+    const cell=P.getBoundingClientRect().width/COLS;
+    drag={e,el,sx:ev.clientX,sy:ev.clientY,c:e.c,r:e.r,w:e.w,h:e.h,cell,mode:ev.target.dataset.hdl?'size':'move'};
+    el.setPointerCapture(ev.pointerId); ev.preventDefault();
+    S.elements=S.elements.filter(x=>x!==e);S.elements.push(e);
+  });
+  P.addEventListener('pointermove',ev=>{
+    if(!drag)return;
+    const dc=Math.round((ev.clientX-drag.sx)/drag.cell), dr=Math.round((ev.clientY-drag.sy)/drag.cell);
+    const e=drag.e;
+    if(drag.mode==='move'){e.c=drag.c+dc;e.r=drag.r+dr}
+    else {e.w=Math.max(1,Math.min(COLS-e.c,drag.w+dc));e.h=Math.max(1,Math.min(ROWS-e.r,drag.h+dr))}
+    clampEl(e);
+    drag.el.style.left=e.c*100/COLS+'%';drag.el.style.top=e.r*100/ROWS+'%';drag.el.style.width=e.w*100/COLS+'%';drag.el.style.height=e.h*100/ROWS+'%';
+  });
+  const end=()=>{if(!drag)return;S.sel=drag.e.id;drag=null;render()};
+  P.addEventListener('pointerup',end);P.addEventListener('pointercancel',end);
+}
+
+/* ===================== 3 秒測試 ===================== */
+function runTest(){
+  const sc=scores();
+  const people=shuffle(PEOPLE).slice(0,3);
+  const p=Math.max(.05,Math.min(.95,(sc.K-20)/70));
+  const nSt=S.elements.filter(e=>e.type==='sticker').length;
+  const pool = nSt>=4 ? WRONG_SPARKLE : WRONG_SMALL;
+  let right=0;
+  const lines=people.map((pp,i)=>{
+    const ok=Math.random()<p; if(ok)right++;
+    let ta='';
+    if(pp.ta) ta = ok&&sc.T>=60 ? '（目標客群）「下班可以約朋友來，感覺是給我的。」' : '（目標客群）「好像太高級了，不是給我的。」';
+    return {who:pp.n, ok, say: ok?RIGHT[i%RIGHT.length]:pool[(i+Math.floor(Math.random()*pool.length))%pool.length], ta};
+  });
+  const items=S.briefAI?AI_BRIEF:[...S.brief];
+  let friend;
+  if(sc.K<55) friend = nSt>=4 ? '金色火花太搶了，肉被淹沒。先把一盤主菜放大，裝飾留兩三個就好。' : '肉太小，三秒內看不出你賣什麼。挑一盤主菜放大到海報的一半。';
+  else if(sc.T<55) friend = items.includes('A') ? '有寫客群，但顏色和字不太像在對下班的上班族說話。' : '你想賣給誰？需求單裡沒寫客群，AI 只能猜，猜出來就誰都不像在對他說話。';
+  else if(sc.M<55) friend = '這張跟隔壁家太像了：黑底、金字、發光的肉。換掉 AI 給的名字、顏色或排法，至少留一樣只有你有的東西。';
+  else friend = '看得懂，也有自己的樣子。之後每張圖都沿用這組顏色、字和 Logo，客人就會記得你。';
+  return {right,lines,friend};
+}
+function flashTest(){
+  const ov=document.createElement('div'); ov.className='flash';
+  ov.innerHTML=`<div class="cd">3</div>${renderPoster(S.elements)}<div class="sub" style="color:#e6d9c4">路人只看 3 秒⋯⋯</div>`;
+  document.body.appendChild(ov);
+  let n=3; const t=setInterval(()=>{n--; if(n>0)ov.querySelector('.cd').textContent=n; else {clearInterval(t);ov.remove();S.testResult=runTest();logStep('給別人看','me','找 3 個人看 3 秒');go('testResult')}},1000);
+}
+
+reset(); render();
+// 字體載入後重新量字寬、重畫
+document.fonts && Promise.all([document.fonts.load(`100px Mantou`,'我的第一張海報燒肉'),document.fonts.load(`700 100px 'Noto Sans TC'`,'炭火燒肉')]).then(()=>document.fonts.ready).then(()=>render());
+</script>
+
+</body>
+</html>
