@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>我的第一張海報｜Y2K 選物店</title>
+<link rel="stylesheet" href="huninn.css">
+<style>@font-face{font-family:'Bagel Fat One';src:url(fonts/bagel.woff2) format('woff2');font-display:swap}</style>
+<style>
+:root{
+  --bg1:#efe9ff;--bg2:#ffe3f4;--ink:#241b3a;--mute:#6d6487;--line:#d9d0f0;
+  --pink:#ff3fae;--violet:#7a5cff;--card:#ffffffd9;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:Huninn,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);
+  background:radial-gradient(120% 80% at 10% 0%,#fff 0%,var(--bg1) 45%,var(--bg2) 100%) fixed;}
+.app{max-width:440px;margin:0 auto;padding:14px 14px 40px;min-height:100vh}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.top .t{font-size:13px;color:var(--mute);letter-spacing:.06em}
+.days{display:flex;align-items:center;gap:6px;font-size:13px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:5px 10px 5px 8px}
+.days .dots{display:flex;gap:3px}
+.days .dots i{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#fff,#b9b3cf 55%,#6e6890);box-shadow:inset 0 0 0 1px #8d86aa}
+.days .dots i.used{background:#e9e5f3;box-shadow:inset 0 0 0 1px #d4cee6}
+.days b{font-size:15px}
+.card{background:var(--card);backdrop-filter:blur(6px);border:1.5px solid #fff;border-radius:22px;padding:18px 16px;box-shadow:0 10px 30px -18px #5a3c9a66}
+.step{font-size:12px;color:var(--violet);letter-spacing:.12em;margin-bottom:4px}
+h2{font-size:22px;margin:0 0 6px;font-weight:400}
+p{line-height:1.65;margin:6px 0}
+.sub{color:var(--mute);font-size:14px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:1.5px solid var(--line);background:#fff;border-radius:16px;padding:12px;font:inherit;color:inherit;cursor:pointer}
+.opt:active{transform:scale(.99)}
+.opt .pv{flex:0 0 74px;height:74px;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.opt .tx{flex:1}
+.opt .tx b{display:block;font-weight:400;font-size:16px}
+.opt .tx small{color:var(--mute);font-size:12.5px;line-height:1.5;display:block;margin-top:2px}
+.opt.sel{border-color:var(--violet);box-shadow:0 0 0 3px #7a5cff33}
+.cost{font-size:12px;border-radius:999px;padding:3px 8px;white-space:nowrap;background:#f1edfb;color:#5b4a99}
+.cost.ai{background:linear-gradient(90deg,#ffd3ef,#d9d0ff);color:#7a2a6a}
+.opt[disabled]{opacity:.42;cursor:not-allowed}
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:14px;font:inherit;font-size:17px;cursor:pointer;margin-top:12px;color:#fff;
+  background:linear-gradient(135deg,#2c2347,#4b3c7a);box-shadow:0 8px 20px -10px #2c2347}
+.btn.ai{color:#5a1d4f;background:linear-gradient(120deg,#ffe0f3,#e3dbff 50%,#d6f3ff);box-shadow:inset 0 0 0 1.5px #fff,0 8px 20px -12px #b04a9a}
+.btn.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:8px}.row>*{flex:1}
+input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;color:inherit}
+.chip.on{background:#2c2347;color:#fff;border-color:#2c2347}
+.label{font-size:13px;color:var(--mute);margin:14px 0 4px}
+.prods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.prod{border:1.5px solid var(--line);border-radius:14px;background:#fff;padding:6px;cursor:pointer;text-align:center;font-size:12px;color:var(--mute)}
+.prod img{width:100%;height:70px;object-fit:contain;display:block}
+.prod.on{border-color:var(--violet);box-shadow:0 0 0 3px #7a5cff33;color:var(--ink)}
+.ai-say{display:flex;gap:10px;align-items:flex-start;margin:12px 0}
+.ai-say .who{flex:0 0 34px;height:34px;border-radius:50%;background:conic-gradient(from 200deg,#ffc6ec,#c9b8ff,#a7ecff,#ffc6ec);display:flex;align-items:center;justify-content:center;font-size:12px;color:#5a1d4f}
+.bubble{background:#fff;border-radius:4px 16px 16px 16px;padding:10px 12px;font-size:14.5px;line-height:1.6;box-shadow:0 4px 14px -10px #5a3c9a}
+.say{background:#fff;border-radius:14px;padding:10px 12px;margin-top:8px;font-size:14.5px;line-height:1.6;border:1.5px solid var(--line)}
+.say b{font-weight:400;color:var(--violet)}
+.say.good{border-color:#9be3c0}.say.bad{border-color:#ffc0d8}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#2c2347;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;z-index:50;opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+
+/* poster */
+.poster{position:relative;width:100%;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:#fff;box-shadow:0 18px 40px -20px #3a2470;container-type:inline-size;user-select:none;-webkit-user-select:none}
+.poster .el{position:absolute;display:flex;align-items:center;justify-content:center}
+.poster .pbg{position:absolute;inset:0}
+.poster .el img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1.2cqw 1.6cqw #0004)}
+.poster svg{width:100%;height:100%;overflow:visible}
+.poster.edit .el{touch-action:none;cursor:grab;outline:1px dashed #ffffff88;outline-offset:-1px}
+.poster.edit .el.sel{outline:2px solid #fff;box-shadow:0 0 0 2px var(--violet) inset}
+.grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(#fff6 1px,transparent 1px),linear-gradient(90deg,#fff6 1px,transparent 1px);background-size:calc(100%/12) calc(100%/15);opacity:.45}
+.hdl{position:absolute;right:-9px;bottom:-9px;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--violet);cursor:nwse-resize;z-index:5;touch-action:none}
+.chip.sw i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px;box-shadow:0 0 0 1px #0002}
+.bigt{width:100%;margin:2px 0 6px}.bigt svg{width:100%;height:100%;display:block}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tools .chip{font-size:13px;padding:7px 11px}
+.flash{position:fixed;inset:0;background:#120c22f2;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff}
+.flash .poster{width:min(78vw,340px)}
+.flash .cd{font-size:44px}
+.tape{position:relative;padding:14px 10px 6px}
+.tape:before,.tape:after{content:"";position:absolute;top:4px;width:70px;height:22px;background:#fffbe8cc;box-shadow:0 1px 3px #0002;z-index:2}
+.tape:before{left:6px;transform:rotate(-8deg)}.tape:after{right:6px;transform:rotate(7deg)}
+
+/* report */
+.pct{text-align:center;font-size:15px;color:var(--mute)}
+.meter{margin:10px 0}
+.meter .hd{display:flex;justify-content:space-between;font-size:14px}
+.meter .bar{height:12px;border-radius:999px;background:#ece7f8;overflow:hidden;margin-top:4px}
+.meter .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#7a5cff,#ff5fbf)}
+.meter.pretty .bar i{background:repeating-linear-gradient(135deg,#cfc6ea 0 6px,#e8e2f7 6px 12px)}
+.meter small{color:var(--mute);font-size:12px}
+.gap{background:#2c2347;color:#fff;border-radius:16px;padding:12px 14px;margin:12px 0;font-size:14.5px;line-height:1.6}
+.twins{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.twins img,.twins .poster{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px}
+.twins .cap{font-size:11px;color:var(--mute);text-align:center;margin-top:3px}
+.log{font-size:13.5px;line-height:1.7;padding-left:0;list-style:none;margin:6px 0}
+.log li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:4px 0}
+.log .me{color:#2f8f62}.log .ai{color:#b04a9a}
+.research{font-size:13px;line-height:1.65;color:#4a4166;background:#fff;border-radius:14px;padding:10px 12px;margin-top:8px}
+.research p{margin:4px 0}
+.foot{font-size:11.5px;color:var(--mute);text-align:center;margin-top:18px;line-height:1.6}
+</style>
+</head>
+<body>
+<!-- shared paint for liquid-metal type and stickers -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="chromeG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".22" stop-color="#e4e2f0"/>
+    <stop offset=".40" stop-color="#7d7998"/><stop offset=".5" stop-color="#2f2a46"/>
+    <stop offset=".56" stop-color="#d9d6ea"/><stop offset=".75" stop-color="#ffffff"/>
+    <stop offset="1" stop-color="#a7a3c2"/>
+  </linearGradient>
+  <linearGradient id="pinkChromeG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".25" stop-color="#ffd7f0"/>
+    <stop offset=".42" stop-color="#d0629f"/><stop offset=".5" stop-color="#5e1f4f"/>
+    <stop offset=".57" stop-color="#ffc4e6"/><stop offset=".78" stop-color="#ffffff"/>
+    <stop offset="1" stop-color="#e59acb"/>
+  </linearGradient>
+  <linearGradient id="holoG" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffd6f5"/><stop offset=".3" stop-color="#c9b8ff"/>
+    <stop offset=".55" stop-color="#9fe7ff"/><stop offset=".8" stop-color="#ffc2e8"/><stop offset="1" stop-color="#ffffff"/>
+  </linearGradient>
+  <filter id="liquid" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b"/>
+    <feSpecularLighting in="b" surfaceScale="6" specularConstant="1.4" specularExponent="28" lighting-color="#fff" result="spec"><feDistantLight azimuth="235" elevation="52"/></feSpecularLighting>
+    <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+    <feDiffuseLighting in="b" surfaceScale="6" diffuseConstant="1" lighting-color="#fff" result="dif"><feDistantLight azimuth="235" elevation="60"/></feDiffuseLighting>
+    <feComposite in="dif" in2="SourceAlpha" operator="in" result="difIn"/>
+    <feBlend in="SourceGraphic" in2="difIn" mode="multiply" result="shaded"/>
+    <feComposite in="specIn" in2="shaded" operator="arithmetic" k2="1" k3="1" result="lit"/>
+    <feMorphology in="SourceAlpha" operator="erode" radius="2" result="er"/>
+    <feComposite in="SourceAlpha" in2="er" operator="out" result="rim"/>
+    <feFlood flood-color="#3a2f55" flood-opacity=".55"/><feComposite in2="rim" operator="in" result="rimC"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="sh"/><feOffset in="sh" dy="6" result="sho"/>
+    <feFlood flood-color="#3a1f5a" flood-opacity=".45"/><feComposite in2="sho" operator="in" result="shadow"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="lit"/><feMergeNode in="rimC"/></feMerge>
+  </filter>
+  <filter id="soft" x="-20%" y="-30%" width="140%" height="160%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="s"/><feOffset in="s" dy="4" result="o"/>
+    <feFlood flood-color="#1b0f33" flood-opacity=".35"/><feComposite in2="o" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="sh"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <symbol id="s-spark" viewBox="0 0 100 100"><path d="M50 4 C54 38 62 46 96 50 C62 54 54 62 50 96 C46 62 38 54 4 50 C38 46 46 38 50 4Z"/></symbol>
+  <symbol id="s-heart" viewBox="0 0 100 100"><path d="M50 88 C18 66 6 50 6 32 C6 18 17 8 30 8 C40 8 46 14 50 22 C54 14 60 8 70 8 C83 8 94 18 94 32 C94 50 82 66 50 88Z"/></symbol>
+  <symbol id="s-star" viewBox="0 0 100 100"><path d="M50 6 L61 37 L94 38 L68 58 L78 92 L50 72 L22 92 L32 58 L6 38 L39 37Z" stroke-linejoin="round" stroke-width="6"/></symbol>
+  <symbol id="s-blob" viewBox="0 0 100 100"><path d="M50 8 C74 6 94 26 90 50 C88 70 72 92 48 90 C26 88 8 72 10 48 C12 26 28 10 50 8Z"/></symbol>
+  <symbol id="s-butter" viewBox="0 0 100 100"><path d="M50 30 C40 6 8 6 10 30 C11 44 30 50 46 50 C30 52 14 62 20 80 C26 94 44 84 50 62 C56 84 74 94 80 80 C86 62 70 52 54 50 C70 50 89 44 90 30 C92 6 60 6 50 30Z"/></symbol>
+</defs>
+</svg>
+
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   我的第一張海報｜Y2K 選物店  試作 v0.2
+   資料都在 DATA 區，要改文字或數值只改這一區。
+   ========================================================= */
+const SURVEY_URL = 'https://ooopenlab.cc/preview/yyfDpRRFjwKCDO0Lup46'; // 問卷 C（目前是預覽網址）
+const START_DAYS = 7;
+const COLS = 12, ROWS = 15;           // 排版格線 12 欄 × 15 列（每格正方形）
+const EN_FONT = "Yink, 'Bagel Fat One'"; // 英文：Yink（付費字，拿到檔案後放 fonts/yink.woff2）；目前先用 Bagel Fat One 代替
+const ZH_FONT = "Huninn";                 // 中文：jf open 粉圓（只有一種字重，用描邊加粗）
+
+const PRODUCTS = [
+  {id:'p1', file:'img/p1_camisole.webp', name:'細肩帶小背心'},
+  {id:'p2', file:'img/p2_butterfly.webp', name:'蝴蝶抓夾'},
+  {id:'p3', file:'img/p3_bag.webp', name:'亮片腋下包'},
+  {id:'p4', file:'img/p4_shoes.webp', name:'厚底瑪莉珍'},
+  {id:'p5', file:'img/p5_glasses.webp', name:'無框墨鏡'},
+  {id:'p6', file:'img/p6_skirt.webp', name:'工裝牛仔短裙'},
+];
+const AI_NAMES = ['Y2K Select Shop','Dreamy Y2K','千禧甜心','Butterfly Club','Retro Baby','Y2K Baby Shop','Millennium Girl'];
+const NAME_HINT = /衣|服|飾|選物|古著|穿|包|鞋|髮|裙|衣櫃/;
+
+// 螢光純色背景
+const NEON = {
+  pink:  {label:'螢光粉', bg:'#ff38b0', ink:'#ffffff'},
+  cyan:  {label:'螢光藍', bg:'#2ee8ff', ink:'#15123a'},
+  lime:  {label:'螢光綠', bg:'#c6ff2e', ink:'#1a1033'},
+  violet:{label:'螢光紫', bg:'#9b5cff', ink:'#ffffff'},
+  orange:{label:'螢光橘', bg:'#ff7a1a', ink:'#1a1033'},
+};
+// 分數四項：K 一眼看懂、T 打中對的人、M 記得住、P 好看（只顯示不計分）
+const LOGOS = {
+  chrome:   {label:'泡泡金屬字', note:'跟 AI 圖最像的那種閃亮字', fx:{P:8,M:2}},
+  wordmark: {label:'字標＋小蝴蝶', note:'店名配一個只屬於你的小圖案', fx:{M:12}},
+  stamp:    {label:'圓形印章', note:'像店章，小小的也認得出來', fx:{M:10,K:3}},
+  ai:       {label:'交給 AI', note:'', fx:{M:-10,P:10}},
+};
+const PALETTES = {
+  pink:  {label:'螢光粉＋粉色金屬', note:'AI 最常給的組合', bg:'pink', fx:{M:-6,P:6}},
+  cyan:  {label:'螢光藍＋銀色金屬', note:'像千禧年的科技感', bg:'cyan', fx:{M:8,T:5}},
+  violet:{label:'螢光紫＋銀色金屬', note:'甜酷，夜晚也顯眼', bg:'violet', fx:{M:8,T:3}},
+  lime:  {label:'螢光綠＋全息金屬', note:'很跳，很少人用', bg:'lime', fx:{M:10,T:-4,P:-4}},
+};
+const TITLE_STYLES = {
+  silver:{label:'銀色液態', paint:'chromeG', fx:{K:4}},
+  pink:  {label:'粉色液態', paint:'pinkChromeG', fx:{K:-2,P:4}},
+  holo:  {label:'全息液態', paint:'holoG', fx:{K:-6,P:8}},
+};
+const BRIEF = [
+  {id:'A', label:'客群：18–25 歲、愛千禧穿搭的女生', line:'給愛千禧穿搭的你', fx:{T:20}},
+  {id:'B', label:'賣什麼：衣服、包包、飾品選物', line:'衣服・包包・飾品 選物', fx:{K:18}},
+  {id:'C', label:'主打：本週新品蝴蝶抓夾', line:'本週主打｜蝴蝶抓夾', fx:{K:6,M:4}},
+  {id:'D', label:'價格：單品 $390 起', line:'單品 $390 起', fx:{T:10}},
+  {id:'E', label:'店的個性：甜酷，像翻到媽媽的千禧衣櫃', line:'甜酷系｜媽媽的千禧衣櫃', fx:{M:12,T:5}},
+  {id:'F', label:'地址＋營業時間', line:'赤峰街 ○○ 號｜13:00–21:00', fx:{K:3}},
+  {id:'G', label:'IG 帳號', line:'IG 搜尋店名', fx:{M:3}},
+  {id:'H', label:'開幕優惠：全館 9 折', line:'開幕全館 9 折', fx:{T:3}},
+  {id:'I', label:'熱門詞：「最潮」「必買」「爆款」', line:'最潮！必買爆款！', fx:{M:-8,P:5}},
+];
+const AI_BRIEF = ['I','H'];
+
+const PEOPLE = [
+  {n:'大二的小米', ta:true},{n:'上班族阿哲', ta:false},{n:'高中生 Ruby', ta:true},{n:'路過的阿姨', ta:false},
+  {n:'穿搭博主 Vivi', ta:true},{n:'外送員阿凱', ta:false},{n:'剛下班的工程師', ta:false},{n:'古著控 Momo', ta:true},
+];
+const RIGHT = ['賣衣服跟包包的選物店吧？','千禧風的衣服店！','選物店，有包包跟髮夾。'];
+const WRONG_SPARKLE = ['這是夜店活動嗎？','是 AI 桌布吧？','演唱會應援周邊？','我只記得很閃。'];
+const WRONG_SMALL = ['美甲店？','賣手機殼的？','是抽獎活動嗎？','香水快閃？'];
+
+const ENDINGS = [
+  {min:60, title:'寶藏小店', text:'雖然很多東西是 AI 生成的，但每個關鍵決定都是你做的。路人三秒就知道你賣什麼，而且記得住你。'},
+  {min:40, title:'一間店', text:'好像有點意思，但又沒有讓人想停下來。路人看到了，只是沒記住，也不太確定是不是給自己的。'},
+  {min:0,  title:'看不懂', text:'很閃、很漂亮，可是沒人知道你在賣什麼。開幕那天，大家拍了照，然後走去隔壁。'},
+];
+const RESEARCH = {
+  clutter:'Pieters、Wedel 與 Batra（2010，Journal of Marketing）：畫面細節塞太滿，會搶走大家對品牌的注意，也會降低好感。',
+  product:'Pieters 與 Wedel（2004，Journal of Marketing）：圖像是平面廣告裡最能抓住目光的元素。商品圖太小，等於沒放。',
+  distinct:'Romaniuk（2018，Ehrenberg-Bass Institute）：讓人認出你的，是只屬於你的顏色、字和符號，不是當下流行的樣子。',
+  pretty:'Lindgaard 等人（2006）：好不好看大約 0.05 秒就決定了，但那只是第一眼的好感，不等於看懂，也不等於買單。',
+  audience:'Labrecque 與 Milne（2012）：顏色會讓人推測品牌的個性。選色之前，要先知道是給誰看。',
+};
+
+/* ===================== 狀態 ===================== */
+let S;
+function reset(){
+  S = {
+    step:'intro', days:START_DAYS, luck:Math.round(Math.random()*10-5),
+    name:'', nameAI:null, aiNamePick:shuffle(AI_NAMES).slice(0,3),
+    logo:null, palette:null, titleStyle:null, colorAI:null, bg:null,
+    brief:new Set(), briefAI:null, products:new Set(['p2','p1']),
+    elements:[], layoutSelf:null, tested:false, revised:false, exportJpg:null,
+    log:[], sel:null, testResult:null,
+  };
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const $ = s => document.querySelector(s);
+const app = $('#app');
+function spend(n){S.days=Math.max(0,S.days-n)}
+function canPay(n){return S.days>=n}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2600)}
+function logStep(step, who, what){S.log=S.log.filter(l=>l.step!==step);S.log.push({step,who,what})}
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const briefLines = () => (S.briefAI?AI_BRIEF:[...S.brief]).map(id=>BRIEF.find(b=>b.id===id).line);
+
+/* ===================== 液態金屬字 ===================== */
+// 每段字固定用 100 單位排，再用 viewBox 縮放到格子大小，所以放多大光影都一樣、字不會黏在一起。
+const FS=100, LS=7, LH=122;
+const _cv=document.createElement('canvas').getContext('2d');
+const isLatin = ch => /[\u0000-ɏ]/.test(ch);
+function measure(str, latin){_cv.font=`${FS}px ${latin?EN_FONT:ZH_FONT}`;return _cv.measureText(str).width + LS*[...str].length}
+function tokens(text){ // 英文以單字為單位、中文以字為單位
+  const out=[]; let buf='';
+  for(const ch of text){ if(isLatin(ch)&&ch!==' '){buf+=ch} else { if(buf){out.push(buf);buf=''} out.push(ch) } }
+  if(buf)out.push(buf); return out;
+}
+function runsOf(line){const r=[];for(const ch of line){const l=isLatin(ch);if(r.length&&r[r.length-1].l===l)r[r.length-1].t+=ch;else r.push({l,t:ch})}return r}
+function lineW(line){return runsOf(line).reduce((a,r)=>a+measure(r.t,r.l),0)}
+function wrap(text,n){
+  if(n===1)return [text];
+  const tk=tokens(text), total=lineW(text), target=total/n, lines=[]; let cur='';
+  for(const t of tk){ if(cur && lines.length<n-1 && lineW(cur+t)>target*1.08){lines.push(cur.trim());cur=t.trimStart()} else cur+=t }
+  lines.push(cur.trim()); return lines.filter(Boolean);
+}
+// w,h：框的比例（格數）；paint：漸層 id；metal=false 時用純色、不加光影
+function textSVG(text, w, h, {paint='chromeG', metal=true, color='#fff', maxLines=3}={}){
+  let best=null;
+  for(let n=1;n<=maxLines;n++){
+    const lines=wrap(text,n); const mw=Math.max(...lines.map(lineW))+FS*.3; const mh=lines.length*LH+FS*.3;
+    const sc=Math.min(w/mw,h/mh);
+    if(!best||sc>best.sc*1.04)best={sc,lines,mw,mh};
+  }
+  const {lines,mw,mh}=best;
+  const vw=Math.max(mw,mh*w/h), vh=vw*h/w;
+  const fill = metal?`url(#${paint})`:color;
+  const y0=vh/2-(lines.length-1)*LH/2;
+  const body=lines.map((ln,i)=>`<text x="${vw/2}" y="${y0+i*LH}" dy=".35em" text-anchor="middle" font-size="${FS}" letter-spacing="${LS}">${
+    runsOf(ln).map(r=>`<tspan font-family="${r.l?EN_FONT:ZH_FONT}" ${metal?`stroke="${fill}" stroke-width="${r.l?2:4.5}"`:''}>${esc(r.t)}</tspan>`).join('')}</text>`).join('');
+  return `<svg viewBox="0 0 ${vw.toFixed(1)} ${vh.toFixed(1)}" preserveAspectRatio="xMidYMid meet"><g ${metal?'filter="url(#liquid)"':''} fill="${fill}" stroke-linejoin="round" paint-order="stroke">${body}</g></svg>`;
+}
+
+/* ===================== 計分（唯一的規則來源） ===================== */
+function scores(st=S){
+  let K=45,T=35,M=50,P=50; const flags=new Set();
+  const add=fx=>{K+=fx.K||0;T+=fx.T||0;M+=fx.M||0;P+=fx.P||0};
+  if(st.nameAI){M-=15;flags.add('distinct')} else if(st.name){M+=5; if(NAME_HINT.test(st.name))K+=6; if([...st.name].length>8)K-=5}
+  if(st.logo){add(LOGOS[st.logo].fx); if(st.logo==='ai')flags.add('distinct')}
+  if(st.palette){add(PALETTES[st.palette].fx); if(st.palette==='violet'&&st.brief.has('E'))T+=5}
+  if(st.titleStyle)add(TITLE_STYLES[st.titleStyle].fx);
+  if(st.colorAI){M-=4;flags.add('distinct')}
+  const items = st.briefAI ? AI_BRIEF : [...st.brief];
+  items.forEach(id=>add(BRIEF.find(b=>b.id===id).fx));
+  if(items.length>5){K-=15;flags.add('clutter')}
+  if(!items.includes('A'))flags.add('audience');
+  if(st.products.size>=5){K-=8;flags.add('clutter')}
+  const els=st.elements;
+  if(els.length){
+    const area=e=>e.w*e.h;
+    const prods=els.filter(e=>e.type==='product');
+    const maxA=Math.max(0,...prods.map(area));
+    if(maxA>=36)K+=15; else if(maxA>=16)K+=5; else K-=20;
+    if(maxA<36)flags.add('product');
+    const titles=els.filter(e=>e.type==='title');
+    const nameA=Math.max(0,...titles.filter(e=>!e.txt||e.txt===st.name).map(area));
+    const otherA=Math.max(0,...titles.filter(e=>e.txt&&e.txt!==st.name).map(area));
+    if(nameA>=54)K+=10; else if(nameA<=12)K-=10;
+    if(otherA>nameA){K-=4;M-=8;flags.add('distinct')}
+    const n=els.filter(e=>e.type==='sticker').length;
+    P+=Math.min(16,n*2);
+    if(n>=8){K-=15;flags.add('clutter')} else if(n>=4){K-=8;flags.add('clutter')}
+    const info=els.find(e=>e.type==='info');
+    if(info && items.length>4)K-=10;
+    if(!st.layoutSelf){M-=8;flags.add('distinct')}
+    if(st.bg==='pink'){M-=4}
+  }
+  if(st.tested)K+=5;
+  if(st.exportJpg)K-=8;
+  K+=st.luck;
+  const c=v=>Math.max(0,Math.min(100,Math.round(v)));
+  K=c(K);T=c(T);M=c(M);P=c(P);
+  return {K,T,M,P,total:Math.round(.4*K+.3*T+.3*M),flags};
+}
+
+/* ===================== 海報 ===================== */
+function logoSVG(kind, name, paint, ink){
+  const ch=[...(name||'Y2K')].slice(0,2).join('');
+  if(kind==='wordmark') return `<svg viewBox="0 0 100 100"><g filter="url(#liquid)"><use href="#s-butter" x="8" y="8" width="84" height="84" fill="url(#${paint})"/></g></svg>`;
+  if(kind==='stamp') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="${ink}" stroke-width="6"/><circle cx="50" cy="50" r="34" fill="none" stroke="${ink}" stroke-width="2"/><text x="50" y="50" dy=".36em" text-anchor="middle" font-family="${isLatin(ch[0])?EN_FONT:ZH_FONT}" font-size="${[...ch].length>1?26:38}" fill="${ink}">${esc(ch)}</text></svg>`;
+  return `<svg viewBox="0 0 100 100"><g filter="url(#liquid)"><use href="#s-blob" x="6" y="6" width="88" height="88" fill="url(#${paint})"/></g><text x="50" y="50" dy=".36em" text-anchor="middle" font-family="${isLatin(ch[0])?EN_FONT:ZH_FONT}" font-size="30" fill="#3a2f55">${esc(ch)}</text></svg>`;
+}
+const STICKERS=['s-spark','s-heart','s-star','s-butter','s-spark','s-blob','s-heart','s-spark','s-star','s-butter'];
+function stickerSVG(sym, paint){return `<svg viewBox="0 0 100 100"><g filter="url(#liquid)"><use href="#${sym}" x="10" y="10" width="80" height="80" fill="url(#${paint})" stroke="url(#${paint})"/></g></svg>`}
+
+function ctxNow(){return {name:S.name||'Y2K Select Shop', bg:S.bg||'pink', paint:TITLE_STYLES[S.titleStyle||'pink'].paint, lines:briefLines(), logo:S.logo==='ai'?'chrome':S.logo}}
+function renderPoster(els, opts={}){
+  const cx=opts.ctx||ctxNow(); const nb=NEON[cx.bg];
+  let html=`<div class="pbg" style="background:${nb.bg}"></div>`;
+  for(const e of els){
+    if(e.type==='bg')continue;
+    const pos=`left:${e.c*100/COLS}%;top:${e.r*100/ROWS}%;width:${e.w*100/COLS}%;height:${e.h*100/ROWS}%;`;
+    let inner='';
+    if(e.type==='title') inner=textSVG(e.txt||cx.name, e.w, e.h, {paint:cx.paint});
+    else if(e.type==='logo') inner=logoSVG(cx.logo||'chrome', cx.name, cx.paint, nb.ink);
+    else if(e.type==='product') inner=`<img src="${PRODUCTS.find(x=>x.id===e.pid).file}" alt="">`;
+    else if(e.type==='sticker') inner=stickerSVG(e.sym,cx.paint);
+    else if(e.type==='info') inner=infoSVG(cx.lines, e, nb.ink);
+    const sel = opts.edit && S.sel===e.id;
+    html+=`<div class="el ${e.type} ${sel?'sel':''}" data-id="${e.id}" style="${pos}">${inner}${sel?'<i class="hdl" data-hdl="1"></i>':''}</div>`;
+  }
+  return `<div class="poster ${opts.edit?'edit':''}" ${opts.id?`id="${opts.id}"`:''}>${html}${opts.edit?'<div class="grid"></div>':''}</div>`;
+}
+// 文字資訊：多行、左對齊，字級跟著框放大縮小
+function infoSVG(lines, e, ink){
+  if(!lines.length)return '';
+  const mw=Math.max(...lines.map(l=>lineW(l)))*0.92+20, mh=lines.length*LH+20;
+  const vw=Math.max(mw,mh*e.w/e.h), vh=vw*e.h/e.w; const y0=vh/2-(lines.length-1)*LH/2;
+  return `<svg viewBox="0 0 ${vw.toFixed(1)} ${vh.toFixed(1)}" preserveAspectRatio="xMidYMid meet">${lines.map((l,i)=>`<text x="${((vw-mw)/2+10).toFixed(1)}" y="${y0+i*LH}" dy=".35em" font-size="${FS*0.9}" font-family="${ZH_FONT}" fill="${ink}" stroke="${ink}" stroke-width="2.5">${esc(l)}</text>`).join('')}</svg>`;
+}
+
+let uid=0;
+function aiLayout(name=S.name){
+  const els=[]; const R=(c,r,w,h)=>({c,r,w,h});
+  if(S.briefAI){
+    els.push({id:++uid,type:'title',txt:'Y2K COLLECTION',...R(0,0,12,3)});
+    [[0,3],[4,3],[8,3],[1,7],[5,7],[9,6]].forEach((p,i)=>els.push({id:++uid,type:'product',pid:PRODUCTS[i].id,...R(p[0],p[1],3,3)}));
+    shuffle([[3,3],[7,4],[0,6],[11,7],[4,10],[8,10],[0,10],[10,10],[3,6],[7,7]]).forEach((p,i)=>els.push({id:++uid,type:'sticker',sym:STICKERS[i%STICKERS.length],...R(Math.min(p[0],10),p[1],2,2)}));
+    els.push({id:++uid,type:'title',txt:name,...R(0,13,7,2)});
+    els.push({id:++uid,type:'info',...R(7,13,5,2)});
+    return els;
+  }
+  els.push({id:++uid,type:'title',...R(0,0,12,3)});
+  const prods=[...S.products];
+  const slots = prods.length<=2 ? [[0,3,6,6],[6,5,6,6]] : [[0,3,4,4],[4,3,4,4],[8,3,4,4],[0,7,4,4],[4,7,4,4],[8,7,4,4]];
+  prods.forEach((pid,i)=>{const s=slots[i%slots.length];els.push({id:++uid,type:'product',pid,...R(...s)})});
+  shuffle([[0,3],[10,3],[4,7],[10,9],[0,9],[7,3],[10,11],[0,11],[5,11],[8,11]]).slice(0,9)
+    .forEach((p,i)=>els.push({id:++uid,type:'sticker',sym:STICKERS[i%STICKERS.length],...R(p[0],p[1],2,2)}));
+  els.push({id:++uid,type:'info',...R(0,12,9,3)});
+  els.push({id:++uid,type:'logo',...R(9,12,3,3)});
+  return els;
+}
+
+/* ===================== 畫面 ===================== */
+function daysBar(){
+  let d='';for(let i=0;i<START_DAYS;i++)d+=`<i class="${i>=S.days?'used':''}"></i>`;
+  return `<div class="top"><div class="t">Y2K 選物店・第一張海報</div><div class="days">開幕倒數 <b>${S.days}</b> 天<span class="dots">${d}</span></div></div>`;
+}
+function noTimeNote(cost){return canPay(cost)?'':`<p class="sub" style="color:#b04a9a">開幕倒數不夠了，這一步只能交給 AI。</p>`}
+const bigTitle=(t,paint='holoG',w=10,h=3)=>`<div class="bigt" style="aspect-ratio:${w}/${h}">${textSVG(t,w,h,{paint,maxLines:2})}</div>`;
+
+const V = {};
+V.intro = () => `
+  ${bigTitle('我的第一張海報','chromeG',10,4.4)}
+  <div class="card">
+    <p style="font-size:17px">「現在 AI 這麼方便，我也來開一間 Y2K 選物店吧！」</p>
+    <p class="sub">你的店 7 天後開幕，現在要做第一張宣傳海報。每一步都可以自己決定，或交給 AI。自己做比較花時間，交給 AI 很快，而且看起來都很漂亮。</p>
+    <p class="sub">開幕那天，路人只會看你的海報 3 秒。</p>
+    <button class="btn" data-go="name">開始做海報</button>
+  </div>`;
+V.name = () => `
+  <div class="card">
+    <div class="step">STEP 1／7　店名</div>
+    <h2>你的店叫什麼？</h2>
+    <p class="sub">好記、念得出來，最好一聽就知道賣什麼。</p>
+    <input type="text" id="nm" maxlength="12" placeholder="例如：媽媽的千禧衣櫃" value="${S.nameAI?'':esc(S.name)}">
+    <button class="btn" data-act="nameSelf" ${canPay(1)?'':'disabled'}>用這個名字 <span class="cost">−1 天</span></button>
+    ${noTimeNote(1)}
+    <div class="label">或是讓 AI 取一個（不花時間）</div>
+    <div class="chips">${S.aiNamePick.map(n=>`<button class="chip" data-act="nameAI" data-v="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+  </div>`;
+function optBtn(act, v, title, note, cost, pv=''){
+  const dis = cost>0 && !canPay(cost);
+  return `<button class="opt" data-act="${act}" data-v="${v}" ${dis?'disabled':''}>
+    ${pv?`<div class="pv">${pv}</div>`:''}
+    <div class="tx"><b>${title}</b>${note?`<small>${note}</small>`:''}</div>
+    <span class="cost ${cost?'':'ai'}">${cost?`−${cost} 天`:'不花時間'}</span></button>`;
+}
+V.logo = () => `<div class="card">
+    <div class="step">STEP 2／7　Logo</div>
+    <h2>「${esc(S.name)}」的 Logo</h2>
+    <p class="sub">之後每一張圖都會放它。它是客人認出你的記號。</p>
+    <div class="opts">${['chrome','wordmark','stamp'].map(k=>optBtn('logo',k,LOGOS[k].label,LOGOS[k].note,1,`<div style="background:#9b5cff;width:100%;height:100%;padding:8px">${logoSVG(k,S.name,'chromeG','#fff')}</div>`)).join('')}</div>
+    ${noTimeNote(1)}
+    <button class="btn ai" data-act="logo" data-v="ai">交給 AI 幫我做 ✨ <span class="cost ai">不花時間</span></button>
+  </div>`;
+V.color = () => {
+  const pk=S._pal||'pink', ts=S._ts||'pink';
+  return `<div class="card">
+    <div class="step">STEP 3／7　顏色和字</div>
+    <h2>店的顏色</h2>
+    <div class="opts">${Object.keys(PALETTES).map(k=>`<button class="opt ${S._pal===k?'sel':''}" data-act="pickPal" data-v="${k}"><div class="pv" style="background:${NEON[PALETTES[k].bg].bg}"></div><div class="tx"><b>${PALETTES[k].label}</b><small>${PALETTES[k].note}</small></div></button>`).join('')}</div>
+    <div class="label">店名的字（英文 Yink、中文粉圓，都是液態金屬）</div>
+    <div class="chips">${Object.keys(TITLE_STYLES).map(k=>`<button class="chip ${S._ts===k?'on':''}" data-act="pickTs" data-v="${k}">${TITLE_STYLES[k].label}</button>`).join('')}</div>
+    <div style="aspect-ratio:4/1.3;margin-top:10px;border-radius:14px;overflow:hidden;padding:4px 10px;background:${NEON[PALETTES[pk].bg].bg}">${textSVG(S.name,4,1.2,{paint:TITLE_STYLES[ts].paint,maxLines:2})}</div>
+    <button class="btn" data-act="colorSelf" ${S._pal&&S._ts&&canPay(1)?'':'disabled'}>就用這組 <span class="cost">−1 天</span></button>
+    ${noTimeNote(1)}
+    <button class="btn ai" data-act="colorAI">交給 AI 配色 ✨ <span class="cost ai">不花時間</span></button>
+  </div>`;
+};
+V.brief = () => `
+  <div class="card">
+    <div class="step">STEP 4／7　給 AI 的需求單</div>
+    <h2>你要告訴 AI 什麼？</h2>
+    <p class="sub">勾選的內容，AI 會寫進海報。AI 只知道你告訴它的事。</p>
+    <div class="chips">${BRIEF.map(b=>`<button class="chip ${S.brief.has(b.id)?'on':''}" data-act="brief" data-v="${b.id}">${b.label}</button>`).join('')}</div>
+    <div class="label">海報上要放哪些商品？（已選 ${S.products.size} 件）</div>
+    <div class="prods">${PRODUCTS.map(p=>`<div class="prod ${S.products.has(p.id)?'on':''}" data-act="prod" data-v="${p.id}"><img src="${p.file}" alt="">${p.name}</div>`).join('')}</div>
+    <button class="btn" data-act="briefSelf" ${S.brief.size&&S.products.size&&canPay(1)?'':'disabled'}>送出需求單 <span class="cost">−1 天</span></button>
+    ${noTimeNote(1)}
+    <button class="btn ai" data-act="briefAI">不用寫，AI 自己會想 ✨ <span class="cost ai">不花時間</span></button>
+  </div>`;
+V.gen = () => `<div class="card"><div class="step">STEP 5／7　AI 生成</div><div id="genbox"><p class="sub" style="text-align:center;padding:40px 0">AI 正在生成你的海報⋯⋯</p></div></div>`;
+function genDone(){
+  const n=S.elements.filter(e=>e.type==='sticker').length;
+  const msg = S.briefAI
+    ? '完成！我做了一張超閃的 Y2K 海報，標題寫「Y2K COLLECTION」，六件商品全放上去了，現在很流行這種風格喔 ✨（店名我放在最下面）'
+    : `完成！我幫你加了 ${n} 個閃亮貼紙，還把你給的 ${briefLines().length} 項資訊都放進去了。很吸睛吧？✨`;
+  $('#genbox').innerHTML = `${renderPoster(S.elements)}<div class="ai-say"><div class="who">AI</div><div class="bubble">${msg}</div></div><button class="btn" data-go="layout">下一步</button>`;
+}
+V.layout = () => `
+  <div class="card">
+    <div class="step">STEP 6／7　排版</div>
+    <h2>要自己調整版面嗎？</h2>
+    <p class="sub">自己排要花 2 天。你可以拖動、放大縮小、刪掉東西，每樣東西都會對齊 12×15 的格子。</p>
+    ${renderPoster(S.elements)}
+    <div class="row"><button class="btn" data-act="layoutSelf" ${canPay(2)?'':'disabled'}>自己排 <span class="cost">−2 天</span></button>
+    <button class="btn ai" data-act="layoutAI">直接用 AI 版 ✨</button></div>
+    ${noTimeNote(2)}
+  </div>`;
+V.editor = () => {
+  const sel=S.elements.find(e=>e.id===S.sel);
+  const inPoster=new Set(S.elements.filter(e=>e.type==='product').map(e=>e.pid));
+  return `<div class="card">
+    <div class="step">STEP 6／7　自己排版</div>
+    <p class="sub" style="margin-top:0">點一下選取，拖動移動，拉右下角的圓點放大縮小。字也可以放大。</p>
+    <div id="edwrap">${renderPoster(S.elements,{edit:true,id:'edposter'})}</div>
+    <div class="tools">${sel?`<button class="chip" data-act="grow">＋ 放大</button><button class="chip" data-act="shrink">－ 縮小</button>${sel.type==='title'&&(!sel.txt||sel.txt===S.name)?'':'<button class="chip" data-act="del">刪掉</button>'}`:'<span class="sub" style="font-size:13px">先點選海報上的一樣東西</span>'}</div>
+    <div class="label">背景顏色</div>
+    <div class="chips">${Object.keys(NEON).map(k=>`<button class="chip sw ${S.bg===k?'on':''}" data-act="bg" data-v="${k}"><i style="background:${NEON[k].bg}"></i>${NEON[k].label}</button>`).join('')}</div>
+    <div class="label">商品（點一下放進去或拿掉）</div>
+    <div class="prods">${PRODUCTS.map(p=>`<div class="prod ${inPoster.has(p.id)?'on':''}" data-act="togProd" data-v="${p.id}"><img src="${p.file}" alt="">${p.name}</div>`).join('')}</div>
+    <div class="chips"><button class="chip" data-act="addSticker">＋ 加一個貼紙</button>${S.elements.some(e=>e.type==='info')?'':'<button class="chip" data-act="addInfo">＋ 放回文字資訊</button>'}${S.elements.some(e=>e.type==='logo')?'':'<button class="chip" data-act="addLogo">＋ 放回 Logo</button>'}</div>
+    <button class="btn" data-act="layoutDone">排好了</button>
+  </div>`;
+};
+V.test = () => `
+  <div class="card">
+    <div class="step">STEP 7／7　給別人看</div>
+    <h2>開幕前，要先找人看看嗎？</h2>
+    <p class="sub">找 3 個路過的人，每人只看 3 秒，問他們「這間店在賣什麼？」。設計師朋友也會給你一句話。</p>
+    ${renderPoster(S.elements)}
+    <div class="row"><button class="btn" data-act="testGo" ${canPay(1)?'':'disabled'}>找人看 3 秒 <span class="cost">−1 天</span></button>
+    <button class="btn ghost" data-act="testSkip">不用，直接送印</button></div>
+    ${noTimeNote(1)}
+  </div>`;
+V.testResult = () => {
+  const r=S.testResult;
+  return `<div class="card">
+    <div class="step">3 秒測試結果</div>
+    <h2>${r.right}／3 個人看懂了</h2>
+    ${r.lines.map(l=>`<div class="say ${l.ok?'good':'bad'}"><b>${l.who}</b>：「${l.say}」${l.ta?`<br><small class="sub">${l.ta}</small>`:''}</div>`).join('')}
+    <div class="say"><b>設計師朋友</b>：「${r.friend}」</div>
+    ${S.revised?'':`<button class="btn" data-act="revise" ${canPay(1)?'':'disabled'}>回去改一次 <span class="cost">−1 天</span></button>`}
+    <button class="btn ${S.revised?'':'ghost'}" data-go="export">就這樣，送印</button>
+  </div>`;
+};
+V.export = () => `
+  <div class="card">
+    <div class="step">送印＋張貼</div>
+    <h2>要交什麼檔案給印刷廠？</h2>
+    <p class="sub">海報要印成 A2 貼在店門口，另外做一條橫幅。</p>
+    <div class="opts">
+      ${optBtn('exp','layer','整理分層檔給印刷廠','字和圖分開、尺寸正確，印大也清楚',1)}
+      ${optBtn('exp','jpg','直接存 JPG 送印','最快，印刷廠會自己放大',0)}
+    </div>
+    ${noTimeNote(1)}
+  </div>`;
+function twinPoster(name, bg){
+  const keep={...S}; const saveEls=uid;
+  const els=(()=>{const b=S.briefAI;S.briefAI=false;const p=S.products;S.products=new Set(['p1','p3','p4']);const r=aiLayout(name);S.briefAI=b;S.products=p;return r})();
+  return renderPoster(els,{ctx:{name, bg, paint:'pinkChromeG', lines:['最潮！必買爆款！','開幕全館 9 折'], logo:'chrome'}});
+}
+V.end = () => {
+  const sc=scores(); const end=ENDINGS.find(e=>sc.total>=e.min);
+  const research=[];
+  if(sc.flags.has('clutter'))research.push(RESEARCH.clutter);
+  if(sc.flags.has('product'))research.push(RESEARCH.product);
+  if(sc.flags.has('distinct'))research.push(RESEARCH.distinct);
+  if(sc.flags.has('audience'))research.push(RESEARCH.audience);
+  if(sc.P-sc.total>=25||research.length<2)research.push(RESEARCH.pretty);
+  const m=(lab,v,note,cls='')=>`<div class="meter ${cls}"><div class="hd"><span>${lab}</span><span>${v}</span></div><div class="bar"><i style="width:${v}%"></i></div>${note?`<small>${note}</small>`:''}</div>`;
+  const gapLine = sc.P-sc.total>=20 ? `好看 ${sc.P} 分，但總分只有 ${sc.total}。<br>好看不等於賣得掉，要讓人看得懂、記得住。`
+    : sc.total>=60 ? `總分 ${sc.total}，好看 ${sc.P}。你沒有只追求閃亮，而是讓人看得懂、記得住。`
+    : `總分 ${sc.total}，好看 ${sc.P}。好看是加分，看得懂、記得住才是重點。`;
+  const aiLook = !S.layoutSelf || S.nameAI || S.colorAI;
+  const twinNames=shuffle(AI_NAMES.filter(n=>n!==S.name)).slice(0,2);
+  return `
+  ${bigTitle(end.title,'holoG',10,2.6)}
+  <div class="pct">「${esc(S.name)}」的海報檢測：${sc.total}%</div>
+  <div class="card" style="margin-top:12px">
+    <div class="tape">${renderPoster(S.elements,{id:'final'})}</div>
+    <p style="margin-top:12px">${end.text}</p>
+    <div class="gap">${gapLine}</div>
+    ${m('一眼看懂',sc.K,'3 秒內知道你在賣什麼嗎？（占 40%）')}
+    ${m('打中對的人',sc.T,'想吸引的客群會覺得「這是給我的」嗎？（占 30%）')}
+    ${m('記得住',sc.M,'會不會跟隔壁撞臉？（占 30%）')}
+    ${m('好看',sc.P,'只顯示，不計分','pretty')}
+  </div>
+  ${aiLook?`<div class="card" style="margin-top:12px"><h2 style="font-size:18px">同一天開幕的隔壁兩家</h2><p class="sub">他們也請 AI 做了海報。</p>
+    <div class="twins"><div>${renderPoster(S.elements)}<div class="cap">你</div></div>${twinNames.map((n,i)=>`<div>${twinPoster(n,'pink')}<div class="cap">${i?'再隔壁':'隔壁'}</div></div>`).join('')}</div></div>`:''}
+  <div class="card" style="margin-top:12px">
+    <h2 style="font-size:18px">哪些是你決定的？</h2>
+    <ul class="log">${S.log.map(l=>`<li><span>${l.step}</span><span class="${l.who==='me'?'me':'ai'}">${l.who==='me'?'你決定':'交給 AI'}：${esc(l.what)}</span></li>`).join('')}</ul>
+    <p class="sub">用掉 ${START_DAYS-S.days} 天，剩 ${S.days} 天。</p>
+    <div class="label">這些判定的根據</div>
+    <div class="research">${research.slice(0,3).map(r=>`<p>・${r}</p>`).join('')}</div>
+  </div>
+  <div class="card" style="margin-top:12px;text-align:center">
+    <p style="font-size:17px">如果街上每張海報都長這樣，<br>這是你想要的世界嗎？</p>
+    <a class="btn" href="${SURVEY_URL}" target="_blank" rel="noopener" style="text-decoration:none">回答問卷（約 2 分鐘）</a>
+    <div class="row"><button class="btn ghost" data-act="copy">複製遊戲連結</button><button class="btn ghost" data-act="again">再玩一次</button></div>
+    <p class="sub" style="font-size:12.5px">想分享結果，截圖這一頁就可以。</p>
+  </div>
+  <div class="foot">試作版 v0.2｜畢業製作《這是你想要的世界嗎？》<br>商品圖：Kiki 生成｜字體：jf open 粉圓 Huninn、Bagel Fat One（暫代 Yink），皆為 SIL OFL 1.1</div>`;
+};
+
+/* ===================== 流程 ===================== */
+function go(step){
+  if(S.days<=0){
+    if(step==='logo'&&S.logo===null){S.logo='ai';logStep('Logo','ai','時間不夠，交給 AI');autoAI('Logo');return go('color')}
+    if(step==='color'&&S.palette===null){applyAIColor();logStep('顏色和字','ai','時間不夠，交給 AI');autoAI('顏色和字');return go('brief')}
+    if(step==='brief'&&S.briefAI===null){S.briefAI=true;S.products=new Set(PRODUCTS.map(p=>p.id));logStep('需求單','ai','時間不夠，交給 AI');autoAI('需求單');return go('gen')}
+  }
+  S.step=step;S.sel=null;render();window.scrollTo({top:0,behavior:'smooth'});
+  if(step==='gen'){setTimeout(()=>{S.elements=aiLayout();genDone()},1400)}
+}
+function render(){
+  app.innerHTML = (S.step==='intro'||S.step==='end'?'':daysBar()) + V[S.step]();
+  if(S.step==='editor')bindEditor();
+  if(S.step==='gen'&&S.elements.length)genDone();
+}
+function autoAI(stepLabel){toast(`開幕倒數用完了，${stepLabel}交給 AI。`)}
+function applyAIColor(){S.palette='pink';S.titleStyle='pink';S.bg='pink';S.colorAI=true}
+
+app.addEventListener('click', e=>{
+  const t=e.target.closest('[data-act],[data-go]'); if(!t||t.disabled)return;
+  if(t.dataset.go){go(t.dataset.go);return}
+  const a=t.dataset.act, v=t.dataset.v;
+  switch(a){
+    case 'nameSelf':{const n=$('#nm').value.trim(); if(!n){toast('先輸入店名');return} S.name=n;S.nameAI=false;spend(1);logStep('店名','me',n);go('logo');break}
+    case 'nameAI': S.name=v;S.nameAI=true;logStep('店名','ai',v);toast(`Threads 上已經有 12 家叫「${v}」的店⋯⋯`);go('logo');break;
+    case 'logo': S.logo=v; if(v!=='ai'){spend(1);logStep('Logo','me',LOGOS[v].label)}else logStep('Logo','ai','泡泡金屬字＋閃亮小圖'); go('color');break;
+    case 'pickPal': S._pal=v; render(); break;
+    case 'pickTs': S._ts=v; render(); break;
+    case 'colorSelf': S.palette=S._pal;S.titleStyle=S._ts;S.bg=PALETTES[S._pal].bg;S.colorAI=false;spend(1);logStep('顏色和字','me',`${PALETTES[S._pal].label}・${TITLE_STYLES[S._ts].label}`);go('brief');break;
+    case 'colorAI': applyAIColor();logStep('顏色和字','ai','螢光粉＋粉色液態字');go('brief');break;
+    case 'brief': S.brief.has(v)?S.brief.delete(v):S.brief.add(v); render(); break;
+    case 'prod': S.products.has(v)?S.products.delete(v):S.products.add(v); render(); break;
+    case 'briefSelf': S.briefAI=false;spend(1);logStep('需求單','me',`寫了 ${S.brief.size} 項、放 ${S.products.size} 件商品`);go('gen');break;
+    case 'briefAI': S.briefAI=true;S.brief=new Set();S.products=new Set(PRODUCTS.map(p=>p.id));logStep('需求單','ai','AI 自己想');go('gen');break;
+    case 'layoutSelf': spend(2);S.layoutSelf=true;go('editor');break;
+    case 'layoutAI': S.layoutSelf=false;logStep('排版','ai','直接用 AI 版');go('test');break;
+    case 'grow': case 'shrink': resizeSel(a==='grow'?1:-1);break;
+    case 'del': S.elements=S.elements.filter(x=>x.id!==S.sel);S.sel=null;render();break;
+    case 'bg': S.bg=v; render(); break;
+    case 'togProd':{const ex=S.elements.find(x=>x.type==='product'&&x.pid===v); if(ex)S.elements=S.elements.filter(x=>x!==ex); else addProduct(v); render();break}
+    case 'addSticker': S.elements.push({id:++uid,type:'sticker',sym:STICKERS[Math.floor(Math.random()*STICKERS.length)],c:10,r:0,w:2,h:2});render();break;
+    case 'addInfo': S.elements.push({id:++uid,type:'info',c:0,r:12,w:9,h:3});render();break;
+    case 'addLogo': S.elements.push({id:++uid,type:'logo',c:9,r:12,w:3,h:3});render();break;
+    case 'layoutDone': logStep('排版','me','自己調整版面'); if(S.tested){S.testResult=runTest();go('testResult')} else go('test'); break;
+    case 'testGo': spend(1);S.tested=true;flashTest();break;
+    case 'testSkip': logStep('給別人看','ai','沒找人看');go('export');break;
+    case 'revise': spend(1);S.revised=true;S.layoutSelf=true;go('editor');break;
+    case 'exp': S.exportJpg = v==='jpg'; if(v==='layer'){spend(1);logStep('送印','me','分層檔')}else logStep('送印','ai','直接存 JPG'); go('end');break;
+    case 'again': reset(); go('intro'); break;
+    case 'copy': try{navigator.clipboard.writeText(location.href).then(()=>toast('已複製連結'),()=>toast('請手動複製網址'))}catch(err){toast('請手動複製網址')} break;
+  }
+});
+function addProduct(pid){
+  const taken=S.elements.filter(x=>x.type==='product').length;
+  const spots=[[0,3,6,6],[6,5,6,6],[3,4,6,6],[0,9,5,4]];
+  const s=spots[taken%spots.length];
+  S.elements.push({id:++uid,type:'product',pid,c:s[0],r:s[1],w:s[2],h:s[3]});
+}
+
+/* ===================== 排版編輯 ===================== */
+function clampEl(e){e.w=Math.max(1,Math.min(COLS,e.w));e.h=Math.max(1,Math.min(ROWS,e.h));e.c=Math.max(0,Math.min(COLS-e.w,e.c));e.r=Math.max(0,Math.min(ROWS-e.h,e.r))}
+function resizeSel(d){
+  const e=S.elements.find(x=>x.id===S.sel); if(!e)return;
+  const step=2*d;
+  if(e.type==='title'||e.type==='info'){ // 字：等比例放大
+    const k=(e.w+step)/e.w; e.w+=step; e.h=Math.max(1,Math.round(e.h*k));
+  } else { e.w+=step; e.h+=step; }
+  if(d>0){ if(e.c+e.w>COLS)e.c=COLS-e.w; if(e.r+e.h>ROWS)e.r=ROWS-e.h; }
+  clampEl(e); render();
+}
+function bindEditor(){
+  const P=$('#edposter'); if(!P)return;
+  let drag=null;
+  P.addEventListener('pointerdown',ev=>{
+    const el=ev.target.closest('.el'); if(!el){S.sel=null;render();return}
+    const id=+el.dataset.id; const e=S.elements.find(x=>x.id===id);
+    const cell=P.getBoundingClientRect().width/COLS;
+    drag={e,el,sx:ev.clientX,sy:ev.clientY,c:e.c,r:e.r,w:e.w,h:e.h,cell,mode:ev.target.dataset.hdl?'size':'move'};
+    el.setPointerCapture(ev.pointerId); ev.preventDefault();
+    S.elements=S.elements.filter(x=>x!==e);S.elements.push(e);
+  });
+  P.addEventListener('pointermove',ev=>{
+    if(!drag)return;
+    const dc=Math.round((ev.clientX-drag.sx)/drag.cell), dr=Math.round((ev.clientY-drag.sy)/drag.cell);
+    const e=drag.e;
+    if(drag.mode==='move'){e.c=drag.c+dc;e.r=drag.r+dr}
+    else {e.w=Math.max(1,Math.min(COLS-e.c,drag.w+dc));e.h=Math.max(1,Math.min(ROWS-e.r,drag.h+dr))}
+    clampEl(e);
+    drag.el.style.left=e.c*100/COLS+'%';drag.el.style.top=e.r*100/ROWS+'%';drag.el.style.width=e.w*100/COLS+'%';drag.el.style.height=e.h*100/ROWS+'%';
+  });
+  const end=()=>{if(!drag)return;S.sel=drag.e.id;drag=null;render()};
+  P.addEventListener('pointerup',end);P.addEventListener('pointercancel',end);
+}
+
+/* ===================== 3 秒測試 ===================== */
+function runTest(){
+  const sc=scores();
+  const people=shuffle(PEOPLE).slice(0,3);
+  const p=Math.max(.05,Math.min(.95,(sc.K-20)/70));
+  const nSt=S.elements.filter(e=>e.type==='sticker').length;
+  const pool = nSt>=4 ? WRONG_SPARKLE : WRONG_SMALL;
+  let right=0;
+  const lines=people.map((pp,i)=>{
+    const ok=Math.random()<p; if(ok)right++;
+    let ta='';
+    if(pp.ta) ta = ok&&sc.T>=60 ? '（目標客群）「感覺是給我的，想去逛。」' : '（目標客群）「好像不是給我的。」';
+    return {who:pp.n, ok, say: ok?RIGHT[i%RIGHT.length]:pool[(i+Math.floor(Math.random()*pool.length))%pool.length], ta};
+  });
+  const items=S.briefAI?AI_BRIEF:[...S.brief];
+  let friend;
+  if(sc.K<55) friend = nSt>=4 ? '貼紙太搶了，商品被淹沒。先把一件主商品放大，貼紙留兩三個就好。' : '商品太小，三秒內看不出你賣什麼。挑一件主商品放大到海報的一半。';
+  else if(sc.T<55) friend = items.includes('A') ? '有寫客群，但顏色和字不太像在對她們說話。' : '你想賣給誰？需求單裡沒寫客群，AI 只能猜，猜出來就誰都不像在對他說話。';
+  else if(sc.M<55) friend = '這張跟隔壁家太像了。換掉 AI 給的名字、顏色或排法，至少留一樣只有你有的東西。';
+  else friend = '看得懂，也有自己的樣子。之後每張圖都沿用這組顏色、字和 Logo，客人就會記得你。';
+  return {right,lines,friend};
+}
+function flashTest(){
+  const ov=document.createElement('div'); ov.className='flash';
+  ov.innerHTML=`<div class="cd">3</div>${renderPoster(S.elements)}<div class="sub" style="color:#cfc6ea">路人只看 3 秒⋯⋯</div>`;
+  document.body.appendChild(ov);
+  let n=3; const t=setInterval(()=>{n--; if(n>0)ov.querySelector('.cd').textContent=n; else {clearInterval(t);ov.remove();S.testResult=runTest();logStep('給別人看','me','找 3 個人看 3 秒');go('testResult')}},1000);
+}
+
+reset(); render();
+// 字體載入後重新量字寬、重畫
+document.fonts && document.fonts.load(`100px 'Bagel Fat One'`).then(()=>document.fonts.load(`100px Huninn`,'我的第一張海報選物店')).then(()=>document.fonts.ready).then(()=>render());
+</script>
+
+</body>
+</html>
