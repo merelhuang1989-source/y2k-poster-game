@@ -88,6 +88,8 @@ input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border
 .bigt{width:100%;margin:2px 0 8px;border-radius:12px;background:#0b0806;padding:4px 8px}.bigt svg{width:100%;height:100%;display:block;overflow:visible}
 .tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .tools .chip{font-size:13px;padding:7px 11px}
+.tools.layers{align-items:center;margin-top:6px}
+.chip[disabled]{opacity:.35;cursor:not-allowed}
 .flash{position:fixed;inset:0;background:#0b0806f2;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff}
 .flash .poster{width:min(78vw,340px)}
 .flash .cd{font-size:44px;font-family:Mantou}
@@ -487,9 +489,10 @@ V.editor = () => {
   const inPoster=new Set(S.elements.filter(e=>e.type==='product').map(e=>e.pid));
   return `<div class="card">
     <div class="step">STEP 6／7　自己排版</div>
-    <p class="sub" style="margin-top:0">點一下選取，拖動移動，拉右下角的圓點放大縮小。字也可以放大。</p>
+    <p class="sub" style="margin-top:0">點一下選取，拖動移動，拉右下角的圓點放大縮小。字也可以放大。被蓋住的東西，用「圖層」按鈕移上來。</p>
     <div id="edwrap">${renderPoster(S.elements,{edit:true,id:'edposter'})}</div>
-    <div class="tools">${sel?`<button class="chip" data-act="grow">＋ 放大</button><button class="chip" data-act="shrink">－ 縮小</button>${sel.type==='title'&&(!sel.txt||sel.txt===S.name)?'':'<button class="chip" data-act="del">刪掉</button>'}`:'<span class="sub" style="font-size:13px">先點選海報上的一樣東西</span>'}</div>
+    <div class="tools">${sel?`<button class="chip" data-act="grow">＋ 放大</button><button class="chip" data-act="shrink">－ 縮小</button>${sel.type==='title'&&(!sel.txt||sel.txt===S.name)?'':'<button class="chip" data-act="del">刪掉</button>'}</div>
+    <div class="tools layers"><span class="sub" style="font-size:13px">圖層 ${layerNo(sel)}／${S.elements.length}</span><button class="chip" data-act="layer" data-v="top" ${layerNo(sel)===S.elements.length?'disabled':''}>⤒ 最上</button><button class="chip" data-act="layer" data-v="up" ${layerNo(sel)===S.elements.length?'disabled':''}>↑ 上移</button><button class="chip" data-act="layer" data-v="down" ${layerNo(sel)===1?'disabled':''}>↓ 下移</button><button class="chip" data-act="layer" data-v="bottom" ${layerNo(sel)===1?'disabled':''}>⤓ 最下</button>`:'<span class="sub" style="font-size:13px">先點選海報上的一樣東西</span>'}</div>
     <div class="label">背景顏色</div>
     <div class="chips">${Object.keys(BGS).map(k=>`<button class="chip sw ${S.bg===k?'on':''}" data-act="bg" data-v="${k}"><i style="background:${BGS[k].bg}"></i>${BGS[k].label}</button>`).join('')}</div>
     <div class="label">菜（點一下放進去或拿掉）</div>
@@ -615,6 +618,7 @@ app.addEventListener('click', e=>{
     case 'layoutSelf': spend(2);S.layoutSelf=true;go('editor');break;
     case 'layoutAI': S.layoutSelf=false;logStep('排版','ai','直接用 AI 版');go('test');break;
     case 'grow': case 'shrink': resizeSel(a==='grow'?1:-1);break;
+    case 'layer': moveLayer(v); break;
     case 'del': S.elements=S.elements.filter(x=>x.id!==S.sel);S.sel=null;render();break;
     case 'bg': S.bg=v; render(); break;
     case 'togProd':{const ex=S.elements.find(x=>x.type==='product'&&x.pid===v); if(ex)S.elements=S.elements.filter(x=>x!==ex); else addProduct(v); render();break}
@@ -630,6 +634,14 @@ app.addEventListener('click', e=>{
     case 'copy': try{navigator.clipboard.writeText(location.href).then(()=>toast('已複製連結'),()=>toast('請手動複製網址'))}catch(err){toast('請手動複製網址')} break;
   }
 });
+// 圖層：S.elements 的順序就是上下順序，越後面越上層（1 是最下層）
+function layerNo(e){return S.elements.indexOf(e)+1}
+function moveLayer(dir){
+  const i=S.elements.findIndex(x=>x.id===S.sel); if(i<0)return;
+  const els=S.elements, [e]=els.splice(i,1);
+  const j = dir==='top'?els.length : dir==='bottom'?0 : dir==='up'?Math.min(els.length,i+1) : Math.max(0,i-1);
+  els.splice(j,0,e); render();
+}
 function addProduct(pid){
   const taken=S.elements.filter(x=>x.type==='product').length;
   const spots=[[0,3,6,6],[6,5,6,6],[3,4,6,6],[0,9,5,4]];
@@ -658,7 +670,6 @@ function bindEditor(){
     const cell=P.getBoundingClientRect().width/COLS;
     drag={e,el,sx:ev.clientX,sy:ev.clientY,c:e.c,r:e.r,w:e.w,h:e.h,cell,mode:ev.target.dataset.hdl?'size':'move'};
     el.setPointerCapture(ev.pointerId); ev.preventDefault();
-    S.elements=S.elements.filter(x=>x!==e);S.elements.push(e);
   });
   P.addEventListener('pointermove',ev=>{
     if(!drag)return;
