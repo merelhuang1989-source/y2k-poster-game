@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>我的第一張海報｜燒肉店</title>
-<meta name="description" content="7 天後開幕，做出你燒肉店的第一張海報。全部交給 AI 很快也很高級，但路人看得懂嗎？">
-<meta property="og:title" content="我的第一張海報｜燒肉店">
-<meta property="og:description" content="7 天後開幕，做出你燒肉店的第一張海報。全部交給 AI 很快也很高級，但路人看得懂嗎？">
+<title>來幫燒肉店宣傳吧｜海報遊戲</title>
+<meta name="description" content="8 天後開幕，做出你燒肉店的第一張海報。自己做，還是交給 AI？開幕當天見真章！">
+<meta property="og:title" content="來幫燒肉店宣傳吧｜海報遊戲">
+<meta property="og:description" content="8 天後開幕，做出你燒肉店的第一張海報。自己做，還是交給 AI？開幕當天見真章！">
 <meta property="og:image" content="https://merelhuang1989-source.github.io/y2k-poster-game/yakiniku/og.png">
 <meta property="og:url" content="https://merelhuang1989-source.github.io/y2k-poster-game/yakiniku/">
 <meta property="og:type" content="website">
@@ -37,6 +37,8 @@ body{font-family:"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink);backgr
 h2{font-size:22px;margin:0 0 6px;font-weight:900}
 p{line-height:1.65;margin:6px 0}
 .sub{color:var(--mute);font-size:14px}
+.cis{display:inline-block;margin:2px 0 8px;padding:5px 10px;border-radius:8px;background:#fff3e0;border:1.5px solid #ffb37a;font-size:13.5px;line-height:1.5}
+.cis b{color:#d13a12;margin-right:4px}
 .opts{display:grid;gap:10px;margin-top:14px}
 .opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px;font:inherit;color:inherit;cursor:pointer}
 .opt:active{transform:scale(.99)}
@@ -163,7 +165,7 @@ input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border
    資料都在 DATA 區，要改文字或數值只改這一區。正本：Drive「海報遊戲_燒肉_總文件（唯一正本）」
    ========================================================= */
 const SURVEY_URL = 'https://ooopenlab.cc/preview/yyfDpRRFjwKCDO0Lup46'; // 問卷 C（目前是預覽網址）
-const START_DAYS = 7;
+const START_DAYS = 8;   // 11/20 Kiki：7 天不夠全部自己做到送印，改 8 天（Y2K 版仍是 7 天）
 const COLS = 12, ROWS = 15;          // 排版格線 12 欄 × 15 列（每格正方形）
 const TITLE_FONT = "Mantou";         // 標題：饅頭黑體（OFL）
 const BODY_FONT = "'Noto Sans TC'";  // 內文：思源黑體（Noto Sans TC）
@@ -176,9 +178,14 @@ const PRODUCTS = [
   {id:'p5', file:'img/prod_tongs.webp', name:'夾起來的烤牛肉'},
   {id:'p6', file:'img/u_bowls.webp', name:'小菜和生肉片', photo:true},
 ];
-const AI_MEAT = 'img/ai_meat.webp';   // AI 自己想時放的「金光發亮的和牛」
-const AI_NAMES = ['炙・燒肉','焰・燒肉','燒肉・極','炭火・匠','燃・燒肉','焔・YAKINIKU','極上和牛'];
-const NAME_HINT = /燒|焼|肉|烤|炭|牛|豬|雞|串|網/;
+const AI_MEAT = 'img/ai_meat.webp';
+const MASCOTS = {
+  cow:   {label:'小牛印章', note:'店名配一隻只屬於你的小牛', file:'img/char_cow.webp'},
+  flame: {label:'火苗印章', note:'店名配一團只屬於你的小火苗', file:'img/char_flame.webp'},
+  tongs: {label:'夾子印章', note:'店名配一支只屬於你的燒烤夾', file:'img/char_tongs.webp'},
+};   // AI 自己想時放的「金光發亮的和牛」
+const AI_NAMES = ['炙・燒肉','焰・燒肉','燒肉・極','炭火・匠','燃・燒肉','熊哥燒肉','肉五花'];
+const NAME_HINT = /燒|焼|肉|烤|炭|牛|豬|雞|串/;
 
 // 背景純色（高彩度市場組；黑是 AI 預設）
 const BGS = {
@@ -194,7 +201,7 @@ const APPETITE = {red:6, yellow:4, black:0, pink:-4, green:-6};
 // 分數四項：K 一眼看懂、T 打中對的人、M 記得住、P 好看（只顯示不計分）
 const LOGOS = {
   gold:  {label:'金色火焰字', note:'跟 AI 圖最像的那種金亮字', fx:{P:8,M:2}},
-  cow:   {label:'小牛印章', note:'店名配一隻只屬於你的小牛', fx:{M:12}},
+  cow:   {label:'吉祥物印章', note:'', fx:{M:12}},   // 圖案每局隨機：小牛、火苗、夾子（見 MASCOTS）
   stamp: {label:'圓形店章', note:'像店章，小小的也認得出來', fx:{M:10,K:3}},
   ai:    {label:'交給 AI', note:'', fx:{M:-10,P:10}},
 };
@@ -211,15 +218,15 @@ const TITLE_STYLES = {
   gold: {label:'金箔金光', fill:'url(#goldG)', glow:'glowGold', fx:{K:-6,P:8}},
 };
 const BRIEF = [
-  {id:'A', label:'客群：附近上班族，下班想跟朋友聚餐', line:'下班，來烤一盤', fx:{T:20}},
-  {id:'B', label:'賣什麼：炭火燒肉、雙人套餐', line:'炭火燒肉・雙人套餐', fx:{K:18}},
-  {id:'C', label:'主打：本週厚切牛舌', line:'本週主打｜厚切牛舌', fx:{K:6,M:4}},
-  {id:'D', label:'價格：兩人一桌 $1,280', line:'兩人一桌 $1,280', fx:{T:10}},
-  {id:'E', label:'店的個性：每一塊肉都是老闆自己切的', line:'每一塊肉都是老闆自己切的', fx:{M:12,T:5}},
-  {id:'F', label:'地址＋營業時間', line:'民生路 ○○ 號｜17:00–24:00', fx:{K:3}},
-  {id:'G', label:'IG 帳號', line:'IG 搜尋店名', fx:{M:3}},
-  {id:'H', label:'開幕優惠：第二盤半價', line:'開幕第二盤半價', fx:{T:3}},
-  {id:'I', label:'熱門詞：「頂級」「極致」「炙燒美味」', line:'頂級享受・炙燒的極致美味', fx:{M:-8,P:5}},
+  {id:'A', label:'客群：附近上班族，下班想跟朋友聚餐', line:'下班，一起出來吃個燒肉吧！', fx:{T:20}},
+  {id:'B', label:'店的屬性', line:'炭火燒肉・雙人套餐', fx:{K:18}},
+  {id:'C', label:'主打商品', line:'本週主打｜厚切牛舌', fx:{K:6,M:4}},
+  {id:'D', label:'消費金額', line:'兩人一桌 $1,280', fx:{T:10}},
+  {id:'E', label:'店的調性', line:'每一塊肉都是老闆自己切的', fx:{M:12,T:5}},
+  {id:'F', label:'地址＋營業時間', line:'大觀路32號｜17:00–24:00', fx:{K:3}},
+  {id:'G', label:'訂位電話', line:'02-0000-0000', fx:{M:3}},
+  {id:'H', label:'開幕優惠', line:'開幕優惠！第二盤半價！', fx:{T:3}},
+  {id:'I', label:'行銷', line:'頂級享受・炙燒的極致美味', fx:{M:-8,P:5}},
 ];
 const AI_BRIEF = ['I','H'];
 
@@ -249,7 +256,7 @@ const RESEARCH = {
 let S;
 function reset(){
   S = {
-    step:'intro', days:START_DAYS, luck:Math.round(Math.random()*10-5),
+    step:'intro', days:START_DAYS, mascot:shuffle(Object.keys(MASCOTS))[0], luck:Math.round(Math.random()*10-5),
     name:'', nameAI:null, aiNamePick:shuffle(AI_NAMES).slice(0,3),
     logo:null, palette:null, titleStyle:null, colorAI:null, bg:null,
     brief:new Set(), briefAI:null, products:new Set(['p1','p3']),
@@ -329,10 +336,9 @@ function scores(st=S){
     const n=els.filter(e=>e.type==='sticker').length;
     P+=Math.min(16,n*2);
     if(n>=8){K-=15;flags.add('clutter')} else if(n>=4){K-=8;flags.add('clutter')}
-    const info=els.find(e=>e.type==='info');
-    if(info && items.length>4)K-=10;
+    if(els.filter(e=>e.type==='info').length>4)K-=10;   // 文字資訊超過 4 行
     if(!st.layoutSelf){M-=8;flags.add('distinct')}
-    if(st.bg==='black'){M-=4}
+    if(st.bg==='green'||st.bg==='pink'){M-=4}
     K+=APPETITE[st.bg]||0;
   }
   if(st.tested)K+=5;
@@ -346,7 +352,7 @@ function scores(st=S){
 /* ===================== 海報 ===================== */
 function logoSVG(kind, name, ink){
   const ch=[...(name||'燒肉')].filter(c=>c.trim()&&!/[・·]/.test(c)).slice(0,2).join('');
-  if(kind==='cow') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#fff6e6" stroke="${ink==='#ffffff'?'#1a1410':ink}" stroke-width="6"/><image href="img/char_cow.webp" x="16" y="20" width="68" height="60" preserveAspectRatio="xMidYMid meet"/></svg>`;
+  if(kind==='cow') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#fff6e6" stroke="${ink==='#ffffff'?'#1a1410':ink}" stroke-width="6"/><image href="${MASCOTS[S.mascot||'cow'].file}" x="18" y="18" width="64" height="64" preserveAspectRatio="xMidYMid meet"/></svg>`;
   if(kind==='stamp') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="43" fill="none" stroke="${ink}" stroke-width="6"/><circle cx="50" cy="50" r="35" fill="none" stroke="${ink}" stroke-width="2"/><text x="50" y="50" dy=".36em" text-anchor="middle" font-family="${TITLE_FONT}" font-size="${[...ch].length>1?28:40}" fill="${ink}">${esc(ch)}</text></svg>`;
   return `<svg viewBox="0 0 100 100"><g filter="url(#foil)"><use href="#s-flame" x="6" y="2" width="88" height="96" fill="url(#goldG)"/></g><text x="50" y="62" dy=".36em" text-anchor="middle" font-family="${TITLE_FONT}" font-size="24" fill="#2a1a06">${esc(ch)}</text></svg>`;
 }
@@ -365,7 +371,7 @@ function renderPoster(els, opts={}){
     else if(e.type==='product'){const p=prodOf(e.pid); inner=`<img class="${p.photo?'ph':''}" src="${p.file}" alt="">`}
     else if(e.type==='aimeat') inner=`<img class="aiglow" src="${AI_MEAT}" alt="">`;
     else if(e.type==='sticker') inner=stickerSVG(e.sym);
-    else if(e.type==='info') inner=infoSVG(cx.lines, e, nb.ink);
+    else if(e.type==='info') inner=infoSVG(e.line!=null?[e.line]:cx.lines, e, nb.ink);
     const sel = opts.edit && S.sel===e.id;
     html+=`<div class="el ${e.type} ${sel?'sel':''}" data-id="${e.id}" style="${pos}">${inner}${sel?'<i class="hdl" data-hdl="1"></i>':''}</div>`;
   }
@@ -380,7 +386,9 @@ function infoSVG(lines, e, ink){
 }
 
 let uid=0;
-function aiLayout(name=S.name, st=S){
+// 一行一個文字物件：由下往上疊在左下角（9 欄寬、1 列高）
+function infoEls(lines){const n=lines.length;return lines.map((line,i)=>({id:++uid,type:'info',line,c:0,r:Math.max(0,15-n+i),w:9,h:1}))}
+function aiLayout(name=S.name, st=S, lines=briefLines()){
   const els=[]; const R=(c,r,w,h)=>({c,r,w,h});
   if(st.briefAI){
     els.push({id:++uid,type:'title',txt:'極上燒肉 YAKINIKU',...R(0,0,12,3)});
@@ -388,7 +396,7 @@ function aiLayout(name=S.name, st=S){
     [[0,3],[4,3],[8,3],[0,9],[4,10],[9,9]].forEach((p,i)=>els.push({id:++uid,type:'product',pid:PRODUCTS[i].id,...R(p[0],p[1],3,3)}));
     shuffle([[3,3],[7,4],[0,6],[10,7],[3,8],[8,8],[0,12],[10,12],[3,6],[7,6]]).forEach((p,i)=>els.push({id:++uid,type:'sticker',sym:STICKERS[i%STICKERS.length],...R(Math.min(p[0],10),p[1],2,2)}));
     els.push({id:++uid,type:'title',txt:name,...R(0,13,7,2)});
-    els.push({id:++uid,type:'info',...R(7,13,5,2)});
+    lines.forEach((line,i)=>els.push({id:++uid,type:'info',line,...R(7,Math.max(0,15-lines.length+i),5,1)}));
     return els;
   }
   els.push({id:++uid,type:'title',...R(0,0,12,3)});
@@ -397,7 +405,7 @@ function aiLayout(name=S.name, st=S){
   prods.forEach((pid,i)=>{const s=slots[i%slots.length];els.push({id:++uid,type:'product',pid,...R(...s)})});
   shuffle([[0,3],[10,3],[4,7],[10,9],[0,9],[7,3],[10,11],[0,11],[5,11],[8,11]]).slice(0,9)
     .forEach((p,i)=>els.push({id:++uid,type:'sticker',sym:STICKERS[i%STICKERS.length],...R(p[0],p[1],2,2)}));
-  els.push({id:++uid,type:'info',...R(0,12,9,3)});
+  infoEls(lines).forEach(e=>els.push(e));
   els.push({id:++uid,type:'logo',...R(9,12,3,3)});
   return els;
 }
@@ -407,24 +415,25 @@ function daysBar(){
   let d='';for(let i=0;i<START_DAYS;i++)d+=`<i class="${i>=S.days?'used':''}"></i>`;
   return `<div class="top"><div class="t">燒肉店・第一張海報</div><div class="days">開幕倒數 <b>${S.days}</b> 天<span class="dots">${d}</span></div></div>`;
 }
-function noTimeNote(cost){return canPay(cost)?'':`<p class="sub" style="color:#d13a12">開幕倒數不夠了，這一步只能交給 AI。</p>`}
+function noTimeNote(cost){return canPay(cost)?'':`<p class="sub" style="color:#d13a12">時間不夠了，這一步只能交給 AI。</p>`}
 const bigTitle=(t,ts='white',w=10,h=3)=>`<div class="bigt" style="aspect-ratio:${w}/${h}">${textSVG(t,w,h,{ts,maxLines:2})}</div>`;
 
 const V = {};
 V.intro = () => `
-  ${bigTitle('我的第一張海報','white',10,3.4)}
+  ${bigTitle('來幫燒肉店宣傳吧','white',10,3.4)}
   <div class="card">
-    <p style="font-size:17px;font-weight:700">「現在 AI 這麼方便，我也來開一間燒肉店吧！」</p>
-    <p class="sub">你的店 7 天後開幕，現在要做第一張宣傳海報。每一步都可以自己決定，或交給 AI。自己做比較花時間，交給 AI 很快，而且看起來都很高級。</p>
-    <p class="sub">開幕那天，路人只會看你的海報 3 秒。</p>
+    <p style="font-size:17px;font-weight:700">「肉都是我自己切的，海報也自己做吧！」</p>
+    <p class="sub">你的燒肉店 ${START_DAYS} 天後開幕，現在要做第一張宣傳海報。每一步都可以自己決定，或交給 AI。</p>
+    <p class="sub">開幕當天見真章！</p>
     <button class="btn" data-go="name">開始做海報</button>
   </div>`;
 V.name = () => `
   <div class="card">
     <div class="step">STEP 1／7　店名</div>
-    <h2>你的店叫什麼？</h2>
+    <h2>你的店名要叫什麼？</h2>
+    <div class="cis"><b>品牌識別 1／3・名字</b>客人記住你的第一步，是叫得出你的名字。</div>
     <p class="sub">好記、念得出來，最好一聽就知道賣什麼。</p>
-    <input type="text" id="nm" maxlength="12" placeholder="例如：阿明燒肉" value="${S.nameAI?'':esc(S.name)}">
+    <input type="text" id="nm" maxlength="12" placeholder="例如：火火燒肉" value="${S.nameAI?'':esc(S.name)}">
     <button class="btn" data-act="nameSelf" ${canPay(1)?'':'disabled'}>用這個名字 <span class="cost">−1 天</span></button>
     ${noTimeNote(1)}
     <div class="label">或是讓 AI 取一個（不花時間）</div>
@@ -440,8 +449,9 @@ function optBtn(act, v, title, note, cost, pv=''){
 V.logo = () => `<div class="card">
     <div class="step">STEP 2／7　Logo</div>
     <h2>「${esc(S.name)}」的 Logo</h2>
+    <div class="cis"><b>品牌識別 2／3・記號</b>名字之外，再給客人一個圖案，看一眼就認得。</div>
     <p class="sub">之後每一張圖都會放它。它是客人認出你的記號。</p>
-    <div class="opts">${['gold','cow','stamp'].map(k=>optBtn('logo',k,LOGOS[k].label,LOGOS[k].note,1,`<div style="background:${BGS.red.bg};width:100%;height:100%;padding:8px">${logoSVG(k,S.name,'#ffffff')}</div>`)).join('')}</div>
+    <div class="opts">${['gold','cow','stamp'].map(k=>optBtn('logo',k,k==='cow'?MASCOTS[S.mascot].label:LOGOS[k].label,k==='cow'?MASCOTS[S.mascot].note:LOGOS[k].note,1,`<div style="background:${BGS.red.bg};width:100%;height:100%;padding:8px">${logoSVG(k,S.name,'#ffffff')}</div>`)).join('')}</div>
     ${noTimeNote(1)}
     <button class="btn ai" data-act="logo" data-v="ai">交給 AI 幫我做 ✨ <span class="cost ai">不花時間</span></button>
   </div>`;
@@ -450,6 +460,7 @@ V.color = () => {
   return `<div class="card">
     <div class="step">STEP 3／7　顏色和字</div>
     <h2>店的顏色</h2>
+    <div class="cis"><b>品牌識別 3／3・代表色</b>同一組顏色一直用，客人遠遠看到就知道是你。</div>
     <div class="opts">${Object.keys(PALETTES).map(k=>`<button class="opt ${S._pal===k?'sel':''}" data-act="pickPal" data-v="${k}"><div class="pv" style="background:${BGS[PALETTES[k].bg].bg}"></div><div class="tx"><b>${PALETTES[k].label}</b><small>${PALETTES[k].note}</small></div></button>`).join('')}</div>
     <div class="label">店名的字（饅頭黑體，像巷口亮著的燈籠招牌）</div>
     <div class="chips">${Object.keys(TITLE_STYLES).map(k=>`<button class="chip ${S._ts===k?'on':''}" data-act="pickTs" data-v="${k}">${TITLE_STYLES[k].label}</button>`).join('')}</div>
@@ -462,9 +473,9 @@ V.color = () => {
 V.brief = () => `
   <div class="card">
     <div class="step">STEP 4／7　給 AI 的需求單</div>
-    <h2>你要告訴 AI 什麼？</h2>
+    <h2>你要放上什麼資訊？</h2>
     <p class="sub">勾選的內容，AI 會寫進海報。AI 只知道你告訴它的事。</p>
-    <div class="chips">${BRIEF.map(b=>`<button class="chip ${S.brief.has(b.id)?'on':''}" data-act="brief" data-v="${b.id}">${b.label}</button>`).join('')}</div>
+    <div class="chips">${BRIEF.map(b=>`<button class="chip ${S.brief.has(b.id)?'on':''}" data-act="brief" data-v="${b.id}">${b.label.includes('：')?b.label:`${b.label}：${b.line}`}</button>`).join('')}</div>
     <div class="label">海報上要放哪些菜？（已選 ${S.products.size} 樣）</div>
     <div class="prods">${PRODUCTS.map(p=>`<div class="prod ${S.products.has(p.id)?'on':''}" data-act="prod" data-v="${p.id}"><img class="${p.photo?'ph':''}" src="${p.file}" alt="">${p.name}</div>`).join('')}</div>
     <button class="btn" data-act="briefSelf" ${S.brief.size&&S.products.size&&canPay(1)?'':'disabled'}>送出需求單 <span class="cost">−1 天</span></button>
@@ -475,8 +486,8 @@ V.gen = () => `<div class="card"><div class="step">STEP 5／7　AI 生成</div><
 function genDone(){
   const n=S.elements.filter(e=>e.type==='sticker').length;
   const msg = S.briefAI
-    ? '完成！我做了一張超高級的燒肉海報：黑底、金光、一塊會發光的和牛，標題寫「極上燒肉 YAKINIKU」，六道菜全放上去了，現在很流行這種風格喔 ✨（店名我放在最下面）'
-    : `完成！我幫你加了 ${n} 個金色火花，還把你給的 ${briefLines().length} 項資訊都放進去了。很吸睛吧？✨`;
+    ? '完成！我做了一張超高級的燒肉海報：黑底、金光、一塊會發光的和牛，標題寫「極上燒肉 YAKINIKU」，六道菜全放上去了，現在很流行這種風格喔（店名我放在最下面）'
+    : `完成！我幫你加了 ${n} 個金色火花，還把你給的 ${briefLines().length} 項資訊都放進去了。`;
   $('#genbox').innerHTML = `${renderPoster(S.elements)}<div class="ai-say"><div class="who">AI</div><div class="bubble">${msg}</div></div><button class="btn" data-go="layout">下一步</button>`;
 }
 V.layout = () => `
@@ -502,7 +513,7 @@ V.editor = () => {
     <div class="chips">${Object.keys(BGS).map(k=>`<button class="chip sw ${S.bg===k?'on':''}" data-act="bg" data-v="${k}"><i style="background:${BGS[k].bg}"></i>${BGS[k].label}</button>`).join('')}</div>
     <div class="label">菜（點一下放進去或拿掉）</div>
     <div class="prods">${PRODUCTS.map(p=>`<div class="prod ${inPoster.has(p.id)?'on':''}" data-act="togProd" data-v="${p.id}"><img class="${p.photo?'ph':''}" src="${p.file}" alt="">${p.name}</div>`).join('')}</div>
-    <div class="chips"><button class="chip" data-act="addSticker">＋ 加一個金色火花</button>${S.elements.some(e=>e.type==='info')?'':'<button class="chip" data-act="addInfo">＋ 放回文字資訊</button>'}${S.elements.some(e=>e.type==='logo')?'':'<button class="chip" data-act="addLogo">＋ 放回 Logo</button>'}</div>
+    <div class="chips"><button class="chip" data-act="addSticker">＋ 加一個金色火花</button>${missingLines().length?'<button class="chip" data-act="addInfo">＋ 放回文字資訊</button>':''}${S.elements.some(e=>e.type==='logo')?'':'<button class="chip" data-act="addLogo">＋ 放回 Logo</button>'}</div>
     <button class="btn" data-act="layoutDone">排好了</button>
   </div>`;
 };
@@ -531,7 +542,7 @@ V.export = () => `
   <div class="card">
     <div class="step">送印＋張貼</div>
     <h2>要交什麼檔案給印刷廠？</h2>
-    <p class="sub">海報要印成 A2 貼在店門口，另外做一條橫幅。</p>
+    <p class="sub">海報要印成 A2 貼在店門口。</p>
     <div class="opts">
       ${optBtn('exp','layer','整理分層檔給印刷廠','字和圖分開、尺寸正確，印大也清楚',1)}
       ${optBtn('exp','jpg','直接存 JPG 送印','最快，印刷廠會自己放大',0)}
@@ -539,8 +550,9 @@ V.export = () => `
     ${noTimeNote(1)}
   </div>`;
 function twinPoster(name){
-  const els=aiLayout(name,{briefAI:false,products:new Set(['p1','p3','p4'])});
-  return renderPoster(els,{ctx:{name, bg:'black', ts:'gold', lines:['頂級享受・炙燒的極致美味','開幕第二盤半價'], logo:'gold'}});
+  const lines=['頂級享受・炙燒的極致美味','開幕優惠！第二盤半價！'];
+  const els=aiLayout(name,{briefAI:false,products:new Set(['p1','p3','p4'])},lines);
+  return renderPoster(els,{ctx:{name, bg:'black', ts:'gold', lines, logo:'gold'}});
 }
 V.end = () => {
   const sc=scores(); const end=ENDINGS.find(e=>sc.total>=e.min);
@@ -578,12 +590,12 @@ V.end = () => {
     <div class="research">${research.slice(0,3).map(r=>`<p>・${r}</p>`).join('')}<p style="color:#8a6a3a">・${APPETITE_NOTE}</p></div>
   </div>
   <div class="card" style="margin-top:12px;text-align:center">
-    <p style="font-size:17px;font-weight:700">如果街上每張海報都長這樣，<br>這是你想要的世界嗎？</p>
+    <p style="font-size:17px;font-weight:700">如果每張海報都長這樣，<br>這是你想要的世界嗎？</p>
     <a class="btn" href="${SURVEY_URL}" target="_blank" rel="noopener" style="text-decoration:none">回答問卷（約 2 分鐘）</a>
     <div class="row"><button class="btn ghost" data-act="copy">複製遊戲連結</button><button class="btn ghost" data-act="again">再玩一次</button></div>
     <p class="sub" style="font-size:12.5px">想分享結果，截圖這一頁就可以。</p>
   </div>
-  <div class="foot">試作版 v0.1｜畢業製作《這是你想要的世界嗎？》<br>圖：Kiki 以 AI 生成、Unsplash｜字體：饅頭黑體 Mantou Sans（SIL OFL 1.1）、思源黑體 Noto Sans TC（SIL OFL 1.1）</div>`;
+  <div class="foot">試作版 v0.2｜畢業製作《這是你想要的世界嗎？》</div>`;
 };
 
 /* ===================== 流程 ===================== */
@@ -601,7 +613,7 @@ function render(){
   if(S.step==='editor')bindEditor();
   if(S.step==='gen'&&S.elements.length)genDone();
 }
-function autoAI(stepLabel){toast(`開幕倒數用完了，${stepLabel}交給 AI。`)}
+function autoAI(stepLabel){toast(`時間不夠了，${stepLabel}交給 AI。`)}
 function applyAIColor(){S.palette='black';S.titleStyle='gold';S.bg='black';S.colorAI=true}
 
 app.addEventListener('click', e=>{
@@ -611,7 +623,7 @@ app.addEventListener('click', e=>{
   switch(a){
     case 'nameSelf':{const n=$('#nm').value.trim(); if(!n){toast('先輸入店名');return} S.name=n;S.nameAI=false;spend(1);logStep('店名','me',n);go('logo');break}
     case 'nameAI': S.name=v;S.nameAI=true;logStep('店名','ai',v);toast(`Threads 上已經有 12 家叫「${v}」的店⋯⋯`);go('logo');break;
-    case 'logo': S.logo=v; if(v!=='ai'){spend(1);logStep('Logo','me',LOGOS[v].label)}else logStep('Logo','ai','金色火焰字'); go('color');break;
+    case 'logo': S.logo=v; if(v!=='ai'){spend(1);logStep('Logo','me',v==='cow'?MASCOTS[S.mascot].label:LOGOS[v].label)}else logStep('Logo','ai','金色火焰字'); go('color');break;
     case 'pickPal': S._pal=v; render(); break;
     case 'pickTs': S._ts=v; render(); break;
     case 'colorSelf': S.palette=S._pal;S.titleStyle=S._ts;S.bg=PALETTES[S._pal].bg;S.colorAI=false;spend(1);logStep('顏色和字','me',`${PALETTES[S._pal].label}・${TITLE_STYLES[S._ts].label}`);go('brief');break;
@@ -628,7 +640,10 @@ app.addEventListener('click', e=>{
     case 'bg': S.bg=v; render(); break;
     case 'togProd':{const ex=S.elements.find(x=>x.type==='product'&&x.pid===v); if(ex)S.elements=S.elements.filter(x=>x!==ex); else addProduct(v); render();break}
     case 'addSticker': S.elements.push({id:++uid,type:'sticker',sym:STICKERS[Math.floor(Math.random()*STICKERS.length)],c:10,r:0,w:2,h:2});render();break;
-    case 'addInfo': S.elements.push({id:++uid,type:'info',c:0,r:12,w:9,h:3});render();break;
+    case 'addInfo':{ // 放回的每一行，找左下角還沒被文字占用的那一列
+      const used=r=>S.elements.some(x=>x.type==='info'&&r>=x.r&&r<x.r+x.h);
+      for(const line of missingLines()){let r=14;while(r>0&&used(r))r--;S.elements.push({id:++uid,type:'info',line,c:0,r,w:9,h:1})}
+      render();break}
     case 'addLogo': S.elements.push({id:++uid,type:'logo',c:9,r:12,w:3,h:3});render();break;
     case 'layoutDone': logStep('排版','me','自己調整版面'); if(S.tested){S.testResult=runTest();go('testResult')} else go('test'); break;
     case 'testGo': spend(1);S.tested=true;flashTest();break;
@@ -647,6 +662,7 @@ function moveLayer(dir){
   const j = dir==='top'?els.length : dir==='bottom'?0 : dir==='up'?Math.min(els.length,i+1) : Math.max(0,i-1);
   els.splice(j,0,e); render();
 }
+function missingLines(){const have=new Set(S.elements.filter(e=>e.type==='info').map(e=>e.line));return briefLines().filter(l=>!have.has(l))}
 function addProduct(pid){
   const taken=S.elements.filter(x=>x.type==='product').length;
   const spots=[[0,3,6,6],[6,5,6,6],[3,4,6,6],[0,9,5,4]];
@@ -659,7 +675,9 @@ function clampEl(e){e.w=Math.max(1,Math.min(COLS,e.w));e.h=Math.max(1,Math.min(R
 function resizeSel(d){
   const e=S.elements.find(x=>x.id===S.sel); if(!e)return;
   const step=2*d;
-  if(e.type==='title'||e.type==='info'){ // 字：等比例放大；寬已經滿版時改成加高
+  if(e.type==='info'){ // 一行字：放大＝加寬加高，字跟著變大
+    e.w+=step; e.h+=d;
+  } else if(e.type==='title'){ // 字：等比例放大；寬已經滿版時改成加高
     if(d>0&&e.w>=COLS){e.h+=1}
     else {const k=(e.w+step)/e.w; e.w+=step; e.h=Math.max(1,Math.round(e.h*k));}
   } else { e.w+=step; e.h+=step; }
