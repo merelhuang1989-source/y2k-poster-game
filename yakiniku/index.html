@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>來幫燒肉店宣傳吧｜海報遊戲</title>
-<meta name="description" content="8 天後開幕，做出你燒肉店的第一張海報。自己做，還是交給 AI？開幕當天見真章！">
+<meta name="description" content="7 天後開幕，做出你燒肉店的第一張海報。自己做，還是交給 AI？開幕當天見真章！">
 <meta property="og:title" content="來幫燒肉店宣傳吧｜海報遊戲">
-<meta property="og:description" content="8 天後開幕，做出你燒肉店的第一張海報。自己做，還是交給 AI？開幕當天見真章！">
+<meta property="og:description" content="7 天後開幕，做出你燒肉店的第一張海報。自己做，還是交給 AI？開幕當天見真章！">
 <meta property="og:image" content="https://poster-game.whatworld.workers.dev/yakiniku/og.png">
 <meta property="og:url" content="https://poster-game.whatworld.workers.dev/yakiniku/">
 <meta property="og:type" content="website">
@@ -164,8 +164,8 @@ input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border
    我的第一張海報｜燒肉店  試作 v0.1（沿用 Y2K 版 v0.2 的玩法）
    資料都在 DATA 區，要改文字或數值只改這一區。正本：Drive「海報遊戲_燒肉_總文件（唯一正本）」
    ========================================================= */
-const SURVEY_URL = 'https://ooopenlab.cc/preview/yyfDpRRFjwKCDO0Lup46'; // 問卷 C（目前是預覽網址）
-const START_DAYS = 8;   // 11/20 Kiki：7 天不夠全部自己做到送印，改 8 天（Y2K 版仍是 7 天）
+const SURVEY_URL = 'https://ooopenlab.cc/preview/edcbHSXGVao2SrowGIq1'; // 問卷 C（目前是預覽網址）
+const START_DAYS = 7;   // 11/20 Kiki：改回 7 天；找人看不扣天數，全部自己做到分層檔送印剛好用完
 const COLS = 12, ROWS = 15;          // 排版格線 12 欄 × 15 列（每格正方形）
 const TITLE_FONT = "Mantou";         // 標題：饅頭黑體（OFL）
 const BODY_FONT = "'Noto Sans TC'";  // 內文：思源黑體（Noto Sans TC）
@@ -416,11 +416,11 @@ function daysBar(){
   return `<div class="top"><div class="t">燒肉店・第一張海報</div><div class="days">開幕倒數 <b>${S.days}</b> 天<span class="dots">${d}</span></div></div>`;
 }
 function noTimeNote(cost){return canPay(cost)?'':`<p class="sub" style="color:#d13a12">時間不夠了，這一步只能交給 AI。</p>`}
-const bigTitle=(t,ts='white',w=10,h=3)=>`<div class="bigt" style="aspect-ratio:${w}/${h}">${textSVG(t,w,h,{ts,maxLines:2})}</div>`;
+const bigTitle=(t,ts='white',w=10,h=3,maxLines=2)=>`<div class="bigt" style="aspect-ratio:${w}/${h}">${textSVG(t,w,h,{ts,maxLines})}</div>`;
 
 const V = {};
 V.intro = () => `
-  ${bigTitle('來幫燒肉店宣傳吧','white',10,3.4)}
+  ${bigTitle('來幫燒肉店宣傳吧','white',10,2,1)}
   <div class="card">
     <p style="font-size:17px;font-weight:700">「肉都是我自己切的，海報也自己做吧！」</p>
     <p class="sub">你的燒肉店 ${START_DAYS} 天後開幕，現在要做第一張宣傳海報。每一步都可以自己決定，或交給 AI。</p>
@@ -523,9 +523,8 @@ V.test = () => `
     <h2>開幕前，要先找人看看嗎？</h2>
     <p class="sub">找 3 個路過的人，每人只看 3 秒，問他們「這間店在賣什麼？」。設計師朋友也會給你一句話。</p>
     ${renderPoster(S.elements)}
-    <div class="row"><button class="btn" data-act="testGo" ${canPay(1)?'':'disabled'}>找人看 3 秒 <span class="cost">−1 天</span></button>
+    <div class="row"><button class="btn" data-act="testGo">找人看 3 秒 <span class="cost ai">不花時間</span></button>
     <button class="btn ghost" data-act="testSkip">不用，直接送印</button></div>
-    ${noTimeNote(1)}
   </div>`;
 V.testResult = () => {
   const r=S.testResult;
@@ -578,7 +577,6 @@ V.end = () => {
     ${m('一眼看懂',sc.K,`3 秒內知道你在賣什麼嗎？（占 40%）<br>其中「看起來好吃」（背景用${BGS[S.bg||'black'].label}）：${(APPETITE[S.bg||'black']>0?'+':'')+APPETITE[S.bg||'black']}`)}
     ${m('打中對的人',sc.T,'想吸引的客群會覺得「這是給我的」嗎？（占 30%）')}
     ${m('記得住',sc.M,'會不會跟隔壁撞臉？（占 30%）')}
-    ${m('好看',sc.P,'只顯示，不計分','pretty')}
   </div>
   ${aiLook?`<div class="card" style="margin-top:12px"><h2 style="font-size:18px">同一天開幕的隔壁兩家</h2><p class="sub">他們也請 AI 做了海報。</p>
     <div class="twins"><div>${renderPoster(S.elements)}<div class="cap">你</div></div>${twinNames.map((n,i)=>`<div>${twinPoster(n)}<div class="cap">${i?'再隔壁':'隔壁'}</div></div>`).join('')}</div></div>`:''}
@@ -646,7 +644,7 @@ app.addEventListener('click', e=>{
       render();break}
     case 'addLogo': S.elements.push({id:++uid,type:'logo',c:9,r:12,w:3,h:3});render();break;
     case 'layoutDone': logStep('排版','me','自己調整版面'); if(S.tested){S.testResult=runTest();go('testResult')} else go('test'); break;
-    case 'testGo': spend(1);S.tested=true;flashTest();break;
+    case 'testGo': S.tested=true;flashTest();break;
     case 'testSkip': logStep('給別人看','ai','沒找人看');go('export');break;
     case 'revise': spend(1);S.revised=true;S.layoutSelf=true;go('editor');break;
     case 'exp': S.exportJpg = v==='jpg'; if(v==='layer'){spend(1);logStep('送印','me','分層檔')}else logStep('送印','ai','直接存 JPG'); go('end');break;
