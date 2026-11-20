@@ -90,6 +90,7 @@ input[type=text]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border
 .bigt{width:100%;margin:2px 0 8px;border-radius:12px;background:#0b0806;padding:4px 8px}.bigt svg{width:100%;height:100%;display:block;overflow:visible}
 .tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .tools .chip{font-size:13px;padding:7px 11px}
+.back{border:0;background:none;font:inherit;font-size:14px;color:#d13a12;font-weight:700;padding:2px 0 8px;cursor:pointer}
 .tools.layers{align-items:center;margin-top:6px}
 .chip[disabled]{opacity:.35;cursor:not-allowed}
 .flash{position:fixed;inset:0;background:#0b0806f2;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff}
@@ -253,8 +254,9 @@ const RESEARCH = {
 };
 
 /* ===================== 狀態 ===================== */
-let S;
+let S, HIST=[];   // HIST：每換一頁前的完整狀態，「回上一步」就還原它（含天數）
 function reset(){
+  HIST=[];
   S = {
     step:'intro', days:START_DAYS, mascot:shuffle(Object.keys(MASCOTS))[0], luck:Math.round(Math.random()*10-5),
     name:'', nameAI:null, aiNamePick:shuffle(AI_NAMES).slice(0,3),
@@ -411,9 +413,10 @@ function aiLayout(name=S.name, st=S, lines=briefLines()){
 }
 
 /* ===================== 畫面 ===================== */
+function backBtn(){return HIST.length?'<button class="back" data-act="back">← 回上一步修改</button>':''}
 function daysBar(){
   let d='';for(let i=0;i<START_DAYS;i++)d+=`<i class="${i>=S.days?'used':''}"></i>`;
-  return `<div class="top"><div class="t">燒肉店・第一張海報</div><div class="days">開幕倒數 <b>${S.days}</b> 天<span class="dots">${d}</span></div></div>`;
+  return `${backBtn()}<div class="top"><div class="t">燒肉店・第一張海報</div><div class="days">開幕倒數 <b>${S.days}</b> 天<span class="dots">${d}</span></div></div>`;
 }
 function noTimeNote(cost){return canPay(cost)?'':`<p class="sub" style="color:#d13a12">時間不夠了，這一步只能交給 AI。</p>`}
 const bigTitle=(t,ts='white',w=10,h=3,maxLines=2)=>`<div class="bigt" style="aspect-ratio:${w}/${h}">${textSVG(t,w,h,{ts,maxLines})}</div>`;
@@ -433,7 +436,7 @@ V.name = () => `
     <h2>你的店名要叫什麼？</h2>
     <div class="cis"><b>品牌識別 1／3・名字</b>客人記住你的第一步，是叫得出你的名字。</div>
     <p class="sub">好記、念得出來，最好一聽就知道賣什麼。</p>
-    <input type="text" id="nm" maxlength="12" placeholder="例如：火火燒肉" value="${S.nameAI?'':esc(S.name)}">
+    <input type="text" id="nm" maxlength="12" placeholder="例如：火火燒肉" value="${S.nameAI?'':esc(S.name||S._nm||'')}">
     <button class="btn" data-act="nameSelf" ${canPay(1)?'':'disabled'}>用這個名字 <span class="cost">−1 天</span></button>
     ${noTimeNote(1)}
     <div class="label">或是讓 AI 取一個（不花時間）</div>
@@ -604,7 +607,7 @@ function go(step){
     if(step==='brief'&&S.briefAI===null){S.briefAI=true;S.products=new Set(PRODUCTS.map(p=>p.id));logStep('需求單','ai','時間不夠，交給 AI');autoAI('需求單');return go('gen')}
   }
   S.step=step;S.sel=null;render();window.scrollTo({top:0,behavior:'smooth'});
-  if(step==='gen'){setTimeout(()=>{S.elements=aiLayout();genDone()},1400)}
+  if(step==='gen'){const me=S;setTimeout(()=>{if(S!==me||S.step!=='gen')return;S.elements=aiLayout();genDone()},1400)}
 }
 function render(){
   app.innerHTML = (S.step==='intro'||S.step==='end'?'':daysBar()) + V[S.step]();
@@ -616,6 +619,26 @@ function applyAIColor(){S.palette='black';S.titleStyle='gold';S.bg='black';S.col
 
 app.addEventListener('click', e=>{
   const t=e.target.closest('[data-act],[data-go]'); if(!t||t.disabled)return;
+  if(t.dataset.act==='back'){goBack();return}
+  const before=structuredClone(S);
+  handle(t);
+  // 換了頁（或開始 3 秒測試）就記下換頁前的狀態
+  if(S.step!==before.step || t.dataset.act==='testGo'){ if(S.step!=='intro' || before.step!=='end') HIST.push(before) }
+  if(t.dataset.act==='again')HIST=[];
+});
+function goBack(){
+  let prev=HIST.pop();
+  while(prev && prev.step==='gen' && HIST.length) prev=HIST.pop();   // 跳過「AI 生成中」那一頁
+  if(!prev)return;
+  if(prev.step==='intro'){HIST=[]}
+  const cur=S; S=prev; S.sel=null;
+  if(!S._nm && cur.name && !cur.nameAI) S._nm=cur.name;   // 回到店名頁時，保留剛剛打的名字
+  // 往回退好幾步時，保留後面頁面已經選好的東西，再往前走不用重選
+  if(!S._pal && cur._pal){S._pal=cur._pal} if(!S._ts && cur._ts){S._ts=cur._ts}
+  if(S.briefAI===null && cur.briefAI!==true){S.brief=new Set(cur.brief);S.products=new Set(cur.products)}
+  render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function handle(t){
   if(t.dataset.go){go(t.dataset.go);return}
   const a=t.dataset.act, v=t.dataset.v;
   switch(a){
@@ -651,7 +674,7 @@ app.addEventListener('click', e=>{
     case 'again': reset(); go('intro'); break;
     case 'copy': try{navigator.clipboard.writeText(location.href).then(()=>toast('已複製連結'),()=>toast('請手動複製網址'))}catch(err){toast('請手動複製網址')} break;
   }
-});
+}
 // 圖層：S.elements 的順序就是上下順序，越後面越上層（1 是最下層）
 function layerNo(e){return S.elements.indexOf(e)+1}
 function moveLayer(dir){
